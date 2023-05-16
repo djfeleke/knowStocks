@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "category": "micro-cap",
+    "description": "Market capital under $300 million.",
+    "lower_end": "0",
+    "upper_end": " 3000000.00 "
+  },
+  {
+    "id": 2,
+    "category": "small-cap",
+    "description": "Market capital between $300 million and $2 billion",
+    "lower_end": "3000000.00",
+    "upper_end": "2000000000.00"
+  },
+  {
+    "id": 3,
+    "category": "Mid-cap",
+    "description": "Market capital between $2 billion and $10 billion",
+    "lower_end": "2000000000.00",
+    "upper_end": "10000000000.00"
+  },
+  {
+    "id": 4,
+    "category": "Large-cap",
+    "description": "Market capital greater than $10 billion",
+    "lower_end": "10000000000.00",
+    "upper_end": "0"
+  }
+]
