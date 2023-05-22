@@ -1,5 +1,4 @@
 """CRUD operations."""
-
 from model import db, User_search, User, Income_statement, News_and_sentiments, Company_overview, Company,Category_by_capital, Region, GICS_sector, connect_to_db
 
 def create_gics_sector(id, sector_name):
@@ -37,7 +36,7 @@ def get_region_by_id(id):
 
 def get_region_by_name(name):
     """ Return specific market region based on provided seach name. """
-    return Region.query.filter(Region.region_name==name).all() #If not running change all() to first()
+    return Region.query.filter(Region.region==name).first() #If not running change all() to first()
 
 def get_region_by_market_status(current_status):
     """ Return specific market region based on provided market status. """
@@ -79,8 +78,19 @@ def get_all_companies():
     """ Return all existing companies. """
     return Company.query.all()
 
+def get_companies_by_region(region):
+    companies_by_region = db.session.query(Company.company_name, Region.region).join(Region).all()
+
+    companies_in_region = []
+    # import pdb; pdb.set_trace()
+    for i, company in enumerate(companies_by_region):
+        if(company[i][1] == region.region):
+            companies_by_region.append(company)
+
+    return companies_in_region
+
 def get_search_company(search_query):
-    print(search_query)
+    # print(search_query)
     search = "%{}%".format(search_query)
     results = Company.query.filter((Company.company_name.ilike(search))).all()
     return results
@@ -93,20 +103,6 @@ def get_company_by_ticker_symbol(ticker_symbol):
 
 def get_company_by_name(name):
     return Company.query.filter(Company.company_name==name)
-
-def get_companies_by_region(region_id):
-    companies = Company.query.options(db.joinedload('regions')).all()
-    for company in companies:    
-        if company.region_id == id:
-           return company.company_name
-
-
-def get_companies_by_capital_category(id):
-    companies = Company.query.options(db.joinedload('categories_by_capital')).all()
-    for company in companies:    
-        if company.category_by_capital_id == id:
-           return company.company_name
-
 
 def create_company_overview(company_id,
                             description, 

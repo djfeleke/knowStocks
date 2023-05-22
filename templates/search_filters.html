@@ -2,7 +2,15 @@
 {% extends 'base.html' %}
 
 {% block body %}
-{% for result in search_results %}
-<p>{{result}}</p>
-{% endfor %}
+<div class="container">
+
+    <ul class="list-group" id="myList">
+        {% for result in search_results %}
+        <li class="list-group-item"><a href="#">{{result.company_name}}, ticker symbol:
+                {{result.ticker_symbol}}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+
+
 {% endblock %}

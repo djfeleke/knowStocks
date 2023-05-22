@@ -1,0 +1,43 @@
+<title>Companies</title>
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container">
+
+    <div class="d-flex mx-auto table-responsive mt-4">
+        <table class="table table-responsive table-hover table-striped align-middle table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center">S/N</th>
+                    <th scope="col" class="text-center">Company Name</th>
+                    <th scope="col" class="text-center">Ticker Symbol</th>
+                    <th scope="col" class="text-center">Market Capital</th>
+                    <!-- <th scope="col" class="text-center">GICS Sector</th> -->
+                    <!-- <th scope="col" class="text-center">Region</th>
+                        <th scope="col" class="text-center">Remark</th> -->
+                    <!-- <th scope="col" class="text-center">Capital category</th>  -->
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for company in companies %}
+
+                <tr>
+                    <td>{{company.id}}</td>
+                    <td class="text-start"> <a
+                            href="{{url_for('view_company_details', region_id=region.id)}}">{{company.company_name}}</a>
+                    </td>
+                    <td>{{company.ticker_symbol}}</td>
+                    <td class="money_format">{{company.market_capital}}</td>
+                    <!-- <td>{{company.region_id}}</td> -->
+                    <!-- <td>{{company.category_by_capital_id}}</td> -->
+                </tr>
+
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,38 @@
+<title>News and Sentiments</title>
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="ms-4 ">
+    <h2 class="my-4 text-center">Recent Market News</h2>
+    <p class="text-center"><strong> Sentiment score definition: <em> {{sentiment_score_definition}} </em></strong></p>
+</div>
+<div class="container-fluid ">
+    <div class="row d-flex flex-md-row flex-sm-column mx-auto">
+
+
+        {% for feed in news_sentiments %}
+
+        <div class="market_news_card px-0 card ">
+
+            <img src="{{feed.banner_image}}" class=" card-img-top" alt="Banner picture">
+            <div class="card-body">
+                <h5 class="card-title">{{feed.title}} </h5>
+                <h6 class="">Author(s): {{feed.authors}} </h6>
+                <p class="card-text"><strong>Summary:</strong> {{feed.summary}}</p>
+                <p><strong>Market sentiment score: </strong>{{feed.overall_sentiment_score}} </p>
+                <p><strong>Market sentiment label:</strong> {{feed.overall_sentiment_label}}</p>
+                </p> Time published:
+                <small class="time_published text-muted">{{feed.time_published}}</small>
+                <div class="card-footer">
+
+                    <small class="source_url"><a class="btn btn-primary" href={{feed.url}}>Go to source</a>
+                    </small><br>
+
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

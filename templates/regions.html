@@ -1,11 +1,11 @@
-<title>regions</title>
+<title>Regions</title>
 {% extends 'base.html' %}
 
 {% block body %}
 <div class="container-fluid">
 
     <div class="d-flex mx-auto table-responsive mt-4">
-        <table class="table table-hover table-striped align-middle table-bordered">
+        <table class="table table-responsive table-hover table-striped align-middle table-bordered">
             <thead>
                 <tr>
                     <th scope="col" class="text-center">N/S</th>
@@ -15,6 +15,7 @@
                     <th scope="col" class="text-center">Market Open</th>
                     <th scope="col" class="text-center">Market Close</th>
                     <th scope="col" class="text-center">Current Status</th>
+                    <!-- <th scope="col" class="text-center">Total Companies</th> -->
                     <th scope="col" class="text-center">Remark</th>
                 </tr>
             </thead>
@@ -24,7 +25,8 @@
                 <tr>
                     <td>{{region.id}}</td>
                     <td>{{region.market_type}}</td>
-                    <td><a href=""> {{region.region}} </a></td>
+                    <!-- <td><a href="{{url_for('companies_by_region')}}"> {{region.region}} </a></td> -->
+                    <td><a href="{{url_for('companies_by_region', region_id=region.id)}}">{{region.region}}</a></td>
                     <td>{{region.primary_exchanges}}</td>
                     <td>{{region.local_open}}</td>
                     <td>{{region.local_close}}</td>

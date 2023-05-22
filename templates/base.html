@@ -11,6 +11,9 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
     <link href="https://fontawesome.com/v5/icons/bootstrap?f=brands&s=solid">
     <link rel="stylesheet" href="../static/css/styles.css">
 
@@ -18,10 +21,9 @@
 
 <body>
 
-
     {% block header %}
 
-    <header id="wrapper" class="sticky-top">
+    <header id="wrapper" class="sticky-top ">
 
         <div class=" main-header d-flex align-center justify-center">
             <h1 class="d-flex mx-auto py-4 "><strong class="">Welecome</strong></h1>
@@ -29,17 +31,12 @@
         </div>
 
         <nav class="navbar navbar-default navbar-expand-sm d-flex align-center bg-info py-1 px-0">
-            <!--bg-info py-1 px-0 -->
+
             <div class="container-fluid bg-light align-center">
                 <a class="navbar-brand d-flex" href="./">
-                    <img id="mylogo" src="../static/image/logo.png" alt="text" width="120"
-                        class="rounded-circle d-flex align-center" />
+                    <img id="mylogo" src="../static/image/logo.png" alt="text" width="100"
+                        class="rounded-circle d-flex align-center d-none d-md-block" />
                 </a>
-                <!-- <div class="logoName d-flex">
-                    <a href="/templates/index.html">
-                        Placeholder <br /><span>placeholder</span>
-                    </a>
-                </div> -->
 
                 <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                     data-target="#collapsibleNavbar" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -55,23 +52,35 @@
                         </li>
 
                         <li class="nav-item ">
-                            <a class="regions nav-link px-3 main-link" href="#" class="btn btn-primary">Markets by
+                            <a class="regions nav-link px-3 main-link" href="{{url_for('homepage')}}"
+                                class="btn btn-primary">Home</a>
+
+                        </li>
+                        <li class="nav-item ">
+                            <a class="regions nav-link px-3 main-link" href="{{url_for('news_and_sentiments')}}"
+                                class="btn btn-primary">Market News</a>
+
+                        </li>
+                        <li class="nav-item ">
+                            <a class="regions nav-link px-3 main-link" href="{{url_for('all_regions')}}"
+                                class="btn btn-primary">Markets by
                                 region</a>
 
                         </li>
                         <li class="nav-item ">
-                            <a class="sectors nav-link main-link" href="#" class="btn btn-primary">GICS Sectors</a>
+                            <a class="sectors nav-link main-link" href="{{url_for('get_sector_tree')}}"
+                                class="btn btn-primary">GICS Sectors</a>
                         </li>
 
-                        <li class="nav-item ">
+                        <!-- <li class="nav-item ">
                             <a href="#" class="nav-link px-3 main-link" class="btn btn-primary"> Market Categories By
                                 Capital </a>
-                        </li>
+                        </li> -->
                     </ul>
-                    <div class="row d-flex align-items-center me-auto">
-                        <form action="/search" method="GET" class="d-flex " role="search">
-                            <input class="form-control me-2" name="search_query" type="search" placeholder="Search"
-                                aria-label="Search">
+                    <div class="row d-flex align-items-center me-auto ">
+                        <form action="/search" method="GET" class="d-flex my-auto" role="search">
+                            <input class="form-control me-2" name="search_query" id="search_string" type="search"
+                                placeholder="Search" aria-label="Search">
                             <button class="btn btn-success" type="submit">Search</button>
                         </form>
                     </div>
@@ -83,14 +92,82 @@
             </div>
         </nav>
     </header>
+    {% endblock %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-4">
+                {% with messages = get_flashed_messages(category_filter="success") %}
+                {% if messages %}
+                <!-- <ul class=flashes> -->
+                {% for message in messages %}
+
+                <div class="alert text-align-center alert alert-success alert-dismissible fade show">{{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                {% endfor %}
+                <!-- </ul> -->
+                {% endif %}
+                {% endwith %}
+            </div>
+            <div class="col-sm-4">
+                {% with messages = get_flashed_messages(category_filter="warning") %}
+                {% if messages %}
+                <!-- <ul class=flashes> -->
+                {% for message in messages %}
+
+                <div class="alert text-align-center alert alert-warning alert-dismissible fade show">{{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                {% endfor %}
+                <!-- </ul> -->
+                {% endif %}
+                {% endwith %}
+            </div>
+            <div class="col-sm-4">
+                {% with messages = get_flashed_messages(category_filter="danger") %}
+                {% if messages %}
+                <!-- <ul class=flashes> -->
+                {% for message in messages %}
+
+                <div class="alert text-align-center alert alert-danger alert-dismissible fade show">{{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                {% endfor %}
+                <!-- </ul> -->
+                {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+    </div>
+    {% block body %}
+
+    <!-- 
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    
+    {% for category, message in messages %}
+
+    <div class="alert text-align-center alert alert-{{category}} alert-dismissible fade show">{{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    {% endfor %}
+    
+    {% endif %}
+    {% endwith %} -->
+
     <main container>
+        <div class="results-container">
+            <ul class="results-list" id="list">
+
+            </ul>
+        </div>
 
         {% endblock %}
-        {% block body %}
-
-
-        {% endblock %}
-
 
 
         {% block after_body %}
@@ -100,15 +177,24 @@
 
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-        crossorigin="anonymous"></script>
+    <footer class="border border-info text-center py-3 text-lg-start">
+        <!-- Grid container -->
+        <div class="container-fluid bg-light mt-1">
+
+            <!-- Copyright -->
+            <div class="text-center bg-light p-3">
+                © 2020 Copyright:
+                <a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+            </div>
+            <!-- Copyright -->
+        </div>
+    </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
         integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
         crossorigin="anonymous"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../static/js/gics_tree.js"></script>
+    <script src="../static/js/script.js"> </script>
 </body>
 
 </html>
