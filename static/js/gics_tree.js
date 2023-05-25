@@ -1,9 +1,9 @@
-import fetch from 'node-fetch'
+
+
 fetch("../../data/SectorsTreeMap.json")
     .then((response) => response.json())
     .then((data) => {
-        let treeData = data;
-        return treeData
+        return data;
     });
 
 
@@ -11,7 +11,7 @@ const margin = { top: 20, right: 90, bottom: 20, left: 90 };
 const width = 960 - margin.left - margin.right;
 const height = 500 - margin.top - margin.bottom;
 const svg = d3
-    .select(".container")
+    .select(".svg_main")
     .append("svg")
     .attr("width", width + margin.right + margin.left)
     .attr("height", height + margin.top + margin.bottom)
@@ -56,6 +56,19 @@ function update(source) {
         .style("fill", function (d) {
             return d._children ? "green" : "black"
         });
+
+    nodeEnter
+        .append('text')
+        .attr('dy', '.35em')
+        .attr('x', function (d) {
+            return d.children || d._children ? 13 : 13;
+        })
+        .attr('text-anchor', function (d) {
+            return d.children || d._children ? 'end' : 'start'
+        })
+        .text(function (d) {
+            return d.data.name;
+        })
     let nodeUpdate = nodeEnter.merge(node);
     nodeUpdate
         .transition()
@@ -70,6 +83,42 @@ function update(source) {
             return d._children ? "green" : "black"
         })
         .attr("cursor", "pointer");
+    nodeExit = node
+        .exit()
+        .transition()
+        .duration(duration)
+        .attr('transform', function (d) {
+            return 'translate(' + source.y + ',' + source.x + ')'
+        })
+        .remove();
+
+    nodeExit.select('text').style('fill-opacity', 0);
+    nodeExit.select('circle').attr('r', 0);
+
+    // links
+    function diagonal(s, d) {
+        path = `M ${s.y}, ${d.y}
+        C ${(s.y + d.y) / 2} ${s.x}
+        ${(s.y + d.y) / 2} ${d.s}
+        ${d.y} ${d.x}`;
+
+        return path;
+    }
+
+    let links = treeData.descendants().slice(1);
+    let link = svg.selectAll('path.link').data(links, function (d) {
+        return d.id;
+    })
+
+    let linkEnter = link
+        .enter()
+        .insert('path', 'g')
+        .attr('class', 'link')
+        .attr('d', function (d) {
+            let o = { x: source.x0, y: source.y0 } //may be change y0 to y
+            return diagonal(o, o)
+        });
+    let linkUpdate = linkEnter.merge(link);
     nodes.forEach(function (d) {
         d.x0 = d.x;
         d.y0 = d.y;

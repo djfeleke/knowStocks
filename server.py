@@ -3,8 +3,11 @@ import json
 from model import connect_to_db, db, Region
 import requests
 import os
+from datetime import datetime
+import re
 import crud
-# import momentjs
+import random
+
 from jinja2 import StrictUndefined
 
 app = Flask(__name__)
@@ -12,8 +15,6 @@ app = Flask(__name__)
 app.app_context().push()
 
 app.secret_key = 'dev' 
-
-# app.jinja_env.globals['momentjs'] = momentjs
 
 api_key = os.environ['ALPHAVANTAGE_API_KEY']
 
@@ -24,6 +25,17 @@ def currencyFormat(value):
     value = float(value)
     return "${:,.2f}".format(value)
 
+@app.template_filter()
+def date_time_format(value):
+    year = int(value[:4])
+    month = int(value[4:6])
+    day = int(value[6:8])
+    hour = int(value[9:11])
+    minutes = int(value[11:13])
+
+    formatted_date = datetime(year, month, day, hour, minutes)
+    return formatted_date.strftime("%a, %d %b %Y  %H:%M")
+    
 @app.route('/')
 def homepage():
     """View homepage."""
@@ -35,7 +47,8 @@ def make_search():
     search_query = request.args.get('search_query')
     if search_query:
         search_results = crud.get_search_company(search_query)
-        return render_template('search_filters.html', search_results=search_results)
+        return search_results
+        # return render_template('search_filters.html', search_results=search_results)
 
 @app.route('/register')
 def user_register():
@@ -96,6 +109,7 @@ def all_regions():
             update_region.current_status = region['current_status']
 
             updated_regions.append(update_region)
+
     updated_regions.sort(key = lambda x: x.id )
 
     return render_template("regions.html", regions=updated_regions)
@@ -104,123 +118,128 @@ def all_regions():
 def companies_by_region():
   
     region_id = request.args.get("region_id")
-    
-    
     region = Region.query.get(region_id)
     # all_company = crud.get_companies_by_region(region)
     all_company = region.companies
-
+    # print(all_company)
     # import pdb; pdb.set_trace()
     all_company.sort(key = lambda x: x.id )
     return render_template("companies_by_region.html", companies=all_company)
-        
+    
 @app.route('/company_details')
 def view_company_details():
-    
-    url1 = f'https://www.alphavantage.co/query?function=OVERVIEW&symbol=IBM&apikey={api_key}'
-    overview = requests.get(url1).json()
-    # overview_dict = json.loads(overview.text)
-    overview_content = {}
-    for key, value in overview.items():
-        if(key == 'Description'):
-            overview_content['Description']=value
-        elif(key == 'DividendPerShare'):
-            overview_content['DividendPerShare']=value
-        elif(key == 'ProfitMargin'):
-            overview_content['ProfitMargin']=value
-        elif(key == 'QuarterlyEarningsGrowthYOY'):
-            overview_content['QuarterlyEarningsGrowthYOY']=value
-        elif(key == 'QuarterlyRevenueGrowthYOY'):
-            overview_content['QuarterlyRevenueGrowthYOY'] = value
-        elif(key == 'AnalystTargetPrice'):
-            overview_content['AnalystTargetPrice']=value
-        elif(key == '52WeekHigh'):
-            overview_content['52WeekHigh'] = value
-        elif(key == '52WeekLow'):
-            overview_content['52WeekLow']=value
-        elif(key == '50DayMovingAverage'):
-            overview_content['50DayMovingAverage'] =value
-        elif(key == '200DayMovingAverage'):
-            overview_content['200DayMovingAverage']=value
-        elif(key == 'DividendDate'):
-            overview_content['DividendDate']=value
-        elif(key == 'ExDividendDate'):
-            overview_content['ExDividendDate']=value
+    company_id = request.args.get("company_id")
+    company = crud.get_company_by_id(company_id)
    
-    url2 = f'https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol=IBM&apikey={api_key}'
+    url1 = f'https://www.alphavantage.co/query?function=OVERVIEW&symbol={company.ticker_symbol}&apikey={api_key}'
+    overview = requests.get(url1).json()
+    if overview:
+        overview=overview
+    else:
+        overview = "No company overview is found for "+company.company_name
+    # overview_dict = json.loads(overview.text)
+    # ==================================================
+
+    # overview_content = {}
+    # for key, value in overview.items():
+    #     res_list = []
+    #     if re.match('\w*[A-Z][A-Z]\w+', key):
+    #         overview_content[key]=value
+    #     else:
+    #         res_list = re.findall('[A-Z][^A-Z]*', key)
+    #         res_list = ' '.join(res_list)
+    #         overview_content[res_list.capitalize()] = value
+
+    #======================================================
+    #      if(key == 'Description'):
+    #         overview_content['Description']=value
+    #     elif(key == 'DividendPerShare'):
+    #         overview_content['DividendPerShare']=value
+    #     elif(key == 'ProfitMargin'):
+    #         overview_content['ProfitMargin']=value
+    #     elif(key == 'QuarterlyEarningsGrowthYOY'):
+    #         overview_content['QuarterlyEarningsGrowthYOY']=value
+    #     elif(key == 'QuarterlyRevenueGrowthYOY'):
+    #         overview_content['QuarterlyRevenueGrowthYOY'] = value
+    #     elif(key == 'AnalystTargetPrice'):
+    #         overview_content['AnalystTargetPrice']=value
+    #     elif(key == '52WeekHigh'):
+    #         overview_content['52WeekHigh'] = value
+    #     elif(key == '52WeekLow'):
+    #         overview_content['52WeekLow']=value
+    #     elif(key == '50DayMovingAverage'):
+    #         overview_content['50DayMovingAverage'] =value
+    #     elif(key == '200DayMovingAverage'):
+    #         overview_content['200DayMovingAverage']=value
+    #     elif(key == 'DividendDate'):
+    #         overview_content['DividendDate']=value
+    #     elif(key == 'ExDividendDate'):
+    #         overview_content['ExDividendDate']=value
+   
+    url2 = f'https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol={company.ticker_symbol}&apikey={api_key}'
     incomestatements = requests.get(url2).json()
-    mrq_incomestatement = incomestatements['quarterlyReports'][0]
-    mry_incomestatement = incomestatements['annualReports'][0]
-    # quartely_incomestatements = result['quarterlyReports']
-    # yearly_incomestatement = result['yearlyReports']
 
-
-    # incomestatement_dict = json.loads(incomestatement.text)
-    # incomestatement_content = {}
-    # for i in range(len(incomestatements)):
-    #     for key, value in incomestatements[i].items():
-    #         if(key == 'fiscalDateEnding'):
-    #             incomestatement_content['fiscalDateEnding']=value
-    #         elif(key == 'grossProfit'):
-    #             incomestatement_content['grossProfit']=value
-    #         elif(key == 'totalRevenue'):
-    #             incomestatement_content['totalRevenue']=value
-    #         elif(key == 'costOfRevenue'):
-    #             incomestatement_content['costOfRevenue']=value
-    #         elif(key == 'costofGoodsAndServicesSold'):
-    #             incomestatement_content['costofGoodsAndServicesSold'] = value
-    #         elif(key == 'operatingIncome'):
-    #             incomestatement_content['operatingIncome']=value
-    #         elif(key == 'researchAndDevelopment'):
-    #             incomestatement_content['researchAndDevelopment'] = value
-    #         elif(key == 'operatingExpenses'):
-    #             incomestatement_content['operatingExpenses']=value
-    #         elif(key == 'depreciationAndAmortization'):
-    #             incomestatement_content['depreciationAndAmortization'] =value
-    #         elif(key == 'incomeBeforeTax'):
-    #             incomestatement_content['incomeBeforeTax']=value
-    #         elif(key == 'netIncome'):
-    #             incomestatement_content['netIncome']=value
-
-    url3 = f'https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol=IBM&apikey={api_key}'
+    if incomestatements:
+        
+        mrq_incomestatement = incomestatements['quarterlyReports'][0]
+        mry_incomestatement = incomestatements['annualReports'][0]
+    else:
+        mrq_incomestatement = "No quarterly report has been found for "+company.company_name
+        mry_incomestatement = "No annual report has been found for "+company.company_name
+   
+    url3 = f'https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol={company.ticker_symbol}&apikey={api_key}'
     balancesheets = requests.get(url3).json()
 
-    mrq_balancesheet = balancesheets['quarterlyReports'][0]
-    mry_balancesheet = balancesheets['annualReports'][0]
+    if balancesheets:
+        mrq_balancesheet = balancesheets['quarterlyReports'][0]
+        mry_balancesheet = balancesheets['annualReports'][0] 
+    else:
+        mry_balancesheet = "No annual report has been found for "+company.company_name
+        mrq_balancesheet = "No quarterly report has been found for "+company.company_name
 
     return render_template('company_details.html', 
-                           overview=overview_content, 
+                           overview=overview, 
                            mrq_incomestatement=mrq_incomestatement,
                            mry_incomestatement=mry_incomestatement,
                            mrq_balancesheet=mrq_balancesheet,
                            mry_balancesheet=mry_balancesheet
                         )
+tickers = ["AAPL", "MSFT", "GOOGL", "AMZN","NVDA", "BRK-A","META","TSLA","TSM","V","UNH","XOM","JNJ","LLY","WMT","JPM","MA","PG",
+"CVX","HD","MRK","AVGO","NVO","ORCL","KO","ASML","PEP","ABBV","AZN","BAC","PFE","COST","BABA","NVS","MCD","CRM","CSCO",
+"TMO","TM","ACN","ABT","AMD","LIN","TMUS","DHR","ADBE","CMCSA","NKE","NFLX","DIS"]
 
+ticker = random.choice(tickers)
 
 @app.route('/news')
 def news_and_sentiments():
-    
-    url = f'https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=AAPL&apikey={api_key}'
+    company_id = request.args.get("company_id")
+    if company_id == None:
+        url = f'https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers={ticker}&apikey={api_key}'
+    else: 
+        company = crud.get_company_by_id(company_id)
+        url = f'https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers={company.ticker_symbol}&apikey={api_key}'
+
     result = requests.get(url).json()
     
     news_sentiments = result['feed']
   
     sentiment_score_definition = result['sentiment_score_definition']
-
-    # for news in news_sentiments:
-    #     title = news['title']
-    #     source = news['url']
-    #     authors = news[authors]
-    #     summary = news[summary]
-    #     time_published = news['time_published']
-    #     market_sentiment_score = news['overall_sentiment_score']
-    #     market_sentiment_label = news['overall_sentiment_label']
-    #     company_specific_sentiment = news['ticker_sentiment']['ticker']
-        
-    #     ticker_sentiment_score = news['ticker_sentiment']['ticker_sentiment_score']
-    #     ticker_sentiment_label = news['ticker_sentiment']['ticker_sentiment_label']
-
+   
     return render_template("market_news.html", news_sentiments=news_sentiments, sentiment_score_definition=sentiment_score_definition)
+
+@app.route('/company_news')
+def company_specific_news():
+    company_id = request.args.get("company_id")
+    company = crud.get_company_by_id(company_id)
+    url = f'https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers={company.ticker_symbol}&apikey={api_key}'
+
+    result = requests.get(url).json()
+    
+    news_sentiments = result['feed']
+  
+    sentiment_score_definition = result['sentiment_score_definition']
+   
+    return render_template("company_specific_news.html", news_sentiments=news_sentiments, sentiment_score_definition=sentiment_score_definition)
 
 @app.route('/gics_sector_tree')
 def get_sector_tree():

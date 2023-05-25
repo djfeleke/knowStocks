@@ -9,96 +9,177 @@
 
                 <button class="btn-accordion accordion-button collapsed" type="button" data-bs-toggle="collapse"
                     data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                    <h3> Overview</h3>
+                    <h3><i class="fa-regular fa-folder-open me-2"></i><em>Overview</em></h3>
                 </button>
             </div>
             <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
-                data-bs-parent="#accordionFlushExample">
+                data-bs-parent="#accordionCompanyDetails">
                 <div class=" accordion-body justify-center">
                     <ul class="overview_body">
+                        {% if overview is string %}
+                        <p><strong> {{overview}}</strong></p>
+
+                        {% else %}
                         {% for key, value in overview.items() %}
                         {% if key == 'Description' %}
                         <p><strong>{{key}}:</strong> {{value}}</p>
+                        {% endif %}
+                        {% if value not in ("None", "none","0",0,"-")%}
+                        {% if key in("MarketCapitalization", "EBITDA", "RevenueTTM", "GrossProfitTTM",
+                        "SharesOutstanding") %}
+                        <li> {{key}}: {{value|currencyFormat}}</li>
                         {% else %}
                         <li>{{key}}: {{value}}</li>
-                        {%endif%}
+                        {% endif %}
+                        {% endif %}
                         {% endfor %}
+                        {% endif %}
                     </ul>
                 </div>
             </div>
         </div>
         <div class="accordion-item border border-success border-top-0">
+
             <div class="accordion-header" id="flush-headingTwo">
                 <button class="btn-accordion accordion-button collapsed" type="button" data-bs-toggle="collapse"
                     data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                    <h3> Income Statement</h3>
+                    <h3><i class="fa-regular fa-folder-open me-2"></i><em> Income Statement </em></h3>
                 </button>
             </div>
             <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
-                data-bs-parent="#accordionFlushExample">
-                <div class="accordion-body">
+                data-bs-parent="#accordionCompanyDetails">
+                <div class="accordion-body row inc_statement d-flex">
 
-                    <ul class="quartely_income_statement justify-center">
+                    <ul class="ul_left_padding quartely_income_statement col-12 col-md-6">
+                        {% if mrq_incomestatement is string %}
+                        <p><strong> {{mrq_incomestatement}}</strong></p>
+
+                        {% else %}
                         <p><strong> Recent Quarter Income Statement</strong></p>
                         {% for key, value in mrq_incomestatement.items() %}
-                        <li>{{key}}: {{value}}</li>
-
-                        {% endfor %}
-
-                    </ul>
-                    <ul class="annual_income_statement justify-center">
-                        <p><strong>Most Recent Year Income Statement</strong></p>
-
-                        {% for key, value in mry_incomestatement.items() %}
-                        <li>
-                            {% if key == "operatingExpenses" %}
+                        <!-- <li>{{key}}: {{value}}</li> -->
+                        {% if value not in ("None", "none") %}
+                        <li class="list_items">
+                            {% if (key not in ("fiscalDateEnding", "reportedCurrency")) %}
                             {{key}}: {{value|currencyFormat}}
-                            {% else %}
+                            {% elif key in ("fiscalDateEnding", "reportedCurrency") %}
                             {{key}}: {{value}}
                             {% endif %}
 
                         </li>
-
+                        {% endif %}
                         {% endfor %}
+                        {% endif %}
+                    </ul>
+                    <ul class="ul_left_padding annual_income_statement col-12 col-md-6">
+                        {% if mry_incomestatement is string %}
+                        <p><strong> {{mry_incomestatement}}</strong></p>
+
+                        {% else %}
+                        <p><strong> Recent Annual Income Statement</strong></p>
+                        {% for key, value in mry_incomestatement.items() %}
+                        {% if value not in ("None", "none") %}
+                        <li class="list_items">
+                            {% if (key not in ("fiscalDateEnding", "reportedCurrency")) %}
+                            {{key}}: {{value|currencyFormat}}
+                            {% elif key in ("fiscalDateEnding", "reportedCurrency") %}
+                            {{key}}: {{value}}
+                            {% endif %}
+
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+
+                        {% endif %}
 
                     </ul>
 
                 </div>
             </div>
         </div>
+
         <div class="accordion-item border border-success border-top-0">
             <div class="accordion-header" id="flush-headingTwo">
                 <button class="btn-accordion accordion-button collapsed" type="button" data-bs-toggle="collapse"
                     data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                    <h3> Balance Sheet</h3>
+                    <h3><i class="fa-regular fa-folder-open" me-2></i> <em>Balance Sheet</em></h3>
                 </button>
             </div>
+
             <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
-                data-bs-parent="#accordionFlushExample">
-                <div class="accordion-body">
+                data-bs-parent="#accordionCompanyDetails">
+                <div class="accordion-body row balancesheet d-flex">
 
-                    <ul class="quartely_balanacesheet justify-center">
+                    <ul class="ul_left_padding quartely_balanacesheet col-12 col-md-6">
+
+                        {% if mrq_balancesheet is string %}
+                        <p><strong>{{mrq_balancesheet}}</strong></p>
+
+                        {% else %}
                         <p><strong>Most Recent Quarter Balance Sheet</strong></p>
+
                         {% for key, value in mrq_balancesheet.items() %}
-                        <li>{{key}}: {{value}}</li>
 
+                        {% if value not in ("None", "none") %}
+                        <li class="list_items">
+                            {% if (key not in ("fiscalDateEnding", "reportedCurrency")) %}
+                            {{key}}: {{value|currencyFormat}}
+                            {% elif key in ("fiscalDateEnding", "reportedCurrency") %}
+                            {{key}}: {{value}}
+                            {% endif %}
+
+                        </li>
+                        {% endif %}
                         {% endfor %}
-
+                        {% endif %}
                     </ul>
-                    <ul class="annual_balancesheet justify-center">
+                    <ul class="ul_left_padding annual_balancesheet col-md-6">
+                        {% if mry_balancesheet is string %}
+
+                        <p><strong>{{mry_balancesheet}}</strong></p>
+
+                        {% else %}
                         <p><strong> Most Recent Year Balance Sheet</strong></p>
-
                         {% for key, value in mry_balancesheet.items() %}
-                        <li>{{key}}: {{value}}</li>
+                        {% if value not in ("None", "none") %}
 
+                        <li>
+                            <!-- {{key}}: {{value}} -->
+                            {% if (key not in ("fiscalDateEnding", "reportedCurrency")) %}
+
+                            {{key}}: {{value|currencyFormat}}
+
+                            {% elif key in ("fiscalDateEnding", "reportedCurrency") %}
+                            {{key}}: {{value}}
+                            {% endif %}
+                        </li>
+
+                        {% endif %}
                         {% endfor %}
-
+                        {% endif %}
                     </ul>
+                </div>
+            </div>
 
+            <div class="accordion-item border border-success">
+                <div class="accordion-header" id="flush-headingFour">
+
+                    <button class="btn-accordion accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                        <h3> <i class="fa-solid fa-radio me-2"></i> <em>Company specific news</em></h3>
+                    </button>
+                </div>
+                <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour"
+                    data-bs-parent="#accordionCompanyDetails">
+                    <div class=" accordion-body justify-center">
+                        <p><a href="{{url_for('news_and_sentiments')}}"><strong>Get company specific news</strong></a>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 {% endblock %}

@@ -23,12 +23,12 @@
                 {% for company in companies %}
 
                 <tr>
-                    <td>{{company.id}}</td>
+                    <td>{{loop.index}}</td>
                     <td class="text-start"> <a
-                            href="{{url_for('view_company_details', region_id=region.id)}}">{{company.company_name}}</a>
+                            href="{{url_for('view_company_details',company_id=company.id)}}">{{company.company_name}}</a>
                     </td>
                     <td>{{company.ticker_symbol}}</td>
-                    <td class="money_format">{{company.market_capital}}</td>
+                    <td>{{company.market_capital|currencyFormat}}</td>
                     <!-- <td>{{company.region_id}}</td> -->
                     <!-- <td>{{company.category_by_capital_id}}</td> -->
                 </tr>

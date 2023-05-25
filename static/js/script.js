@@ -1,41 +1,63 @@
+/* implementing search functionaly */
 
-const searchInput = document.querySelector('#search_string')
-searchInput.addEventListener("input", (event) => {
-    let value = event.target.value
-    if (value && value.trim().length > 0) {
-        value = value.trim().toLowerCase()
+const search_input = document.getElementById('search_string');
+const results = document.getElementById('search_results');
 
-        setList(people.filter(person => {
-            return person.name.includes(value)
-        }))
-    } else {
-        clearList();
-    }
+let search_term = '';
+let companies;
+
+//get data
+const fetchCompanies = async () => {
+    const url = 'http://127.0.0.1:5000/search'
+    companies = await fetch(url)
+        .then(result => result.json());
+};
+
+const showCompanies = async () => {
+    results.innerHTML = '';
+
+    await fetchCompanies();
+
+    const ul = document.createElement('ul');
+    ul.classList.add('companies');
+
+    companies
+        .filter(company =>
+            company.company_name.toLowerCase().includes(search_term.toLowerCase())
+            || company.ticker_symbol.toLowerCase().includes(search_term.toLowerCase())
+        )
+        .forEach(company => {
+            const li = document.createElement('li');
+            li.classList.add('company_item');
+
+            const compnay_info = document.createElement('p');
+            compnay_info.innerText = company.company_name + "" + company.ticker_symbol;
+            compnay_info.classList.add('company_info');
+
+            li.appendChild(company_info);
+
+            ul.appendChild(li);
+        });
+
+    results.appendChild(ul);
+};
+
+showCompanies();
+
+search_input.addEventListener('input', e => {
+    search_term = e.target.value;
+    showCompanies();
 });
 
-function setList(results) {
+/*hiding empty list items*/
 
-    for (const person of results) {
-        const resultItem = document.createElement('li')
-        resultItem.classList.add('result-item')
-        const text = document.createTextNode(person.name)
-        resultItem.appendChild(text)
-        list.appendChild(resultItem)
-    }
+const list_item = document.getElementsByTagName("li");
+if (list_item.node.textContent.trim() === "") {
+    list_item.style.display = none;
 }
 
-function clearList() {
-    while (list.firstChild) {
-        list.removeChild(list.firstChild)
-    }
-}
+/*hiding open accordion upon click */
 
-let capital = document.querySelectorAll(".market_capital");
-for (let i = 0; i < capital.length; i++) {
-    let num = Number(capital[i].innerHTML)
-        .toLocaleString('en');
-    capital[i].innerHTML = num;
-    capital[i].classList.add("currSign");
-}
-
-// Market news
+$(document).ready(function () {
+    $('.collapse').collapse
+});
