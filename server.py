@@ -1,16 +1,19 @@
-from flask import (Flask, render_template, request, flash, session, redirect, url_for, g)
+from flask import (Flask, render_template, request, flash, session, redirect, url_for, g, jsonify)
 import json
 from model import connect_to_db, db, Region
 import requests
 import os
-from datetime import datetime
+from datetime import datetime 
+import datetime as dt
 import re
 import crud
 import random
-
+from flask import Blueprint
+from flask_paginate import Pagination, get_page_parameter
 from jinja2 import StrictUndefined
 
 app = Flask(__name__)
+# mod = Blueprint('app', __name__)
 
 app.app_context().push()
 
@@ -34,7 +37,10 @@ def date_time_format(value):
     minutes = int(value[11:13])
 
     formatted_date = datetime(year, month, day, hour, minutes)
-    return formatted_date.strftime("%a, %d %b %Y  %H:%M")
+    if formatted_date >= datetime.today() - dt.timedelta(days=3):
+        formatted_date = formatted_date
+    # print("##############################################")
+        return formatted_date.strftime("%a, %d %b %Y  %H:%M")
     
 @app.route('/')
 def homepage():
@@ -42,13 +48,26 @@ def homepage():
     return render_template('index.html')
 
 @app.route('/search')
-def make_search():
-
-    search_query = request.args.get('search_query')
+def make_global_search():
+   
+    # search_query = request.args.get('search_query')
+    search_query = "New"
     if search_query:
         search_results = crud.get_search_company(search_query)
-        return search_results
-        # return render_template('search_filters.html', search_results=search_results)
+
+        search_result_list = []
+        for search_result in search_results:
+            search_company = {"company_name": search_result.company_name, "ticker_symbol":search_result.ticker_symbol, "market_capital":search_result.market_capital }
+            search_result_list.append(search_company)
+        # search_results
+        # print(search_result_list)
+        # return jsonify(search_result_list)
+        return render_template('search_result.html', search_results=search_result_list)
+   
+    
+@app.route('/regional_search')
+def make_regional_search():
+    pass
 
 @app.route('/register')
 def user_register():
@@ -113,19 +132,42 @@ def all_regions():
     updated_regions.sort(key = lambda x: x.id )
 
     return render_template("regions.html", regions=updated_regions)
+ROWS_PER_PAGE = 100
+@app.route('/all_companies')
+def get_all_companies():
+
+    
+    all_companies = crud.get_all_companies()
+
+    companies = []
+    for company, region, gics_sector, category in all_companies:
+        company_detail = {"company_id":company.id,
+                            "company_name": company.company_name, 
+                          "ticker_symbol":company.ticker_symbol, 
+                          "market_capital":company.market_capital, 
+                          "region": region.region, 
+                          "sector_name": gics_sector.sector_name, 
+                          "category": category.category}
+        companies.append(company_detail)
+
+    # print(companies['info'])
+    return render_template("all_companies.html", companies = companies)
 
 @app.route('/companies')
 def companies_by_region():
   
     region_id = request.args.get("region_id")
     region = Region.query.get(region_id)
-    # all_company = crud.get_companies_by_region(region)
     all_company = region.companies
-    # print(all_company)
+
     # import pdb; pdb.set_trace()
     all_company.sort(key = lambda x: x.id )
     return render_template("companies_by_region.html", companies=all_company)
-    
+
+@app.route('/gics_sector_tree')
+def get_sector_tree():
+    return render_template('gics_sectors_tree.html')
+
 @app.route('/company_details')
 def view_company_details():
     company_id = request.args.get("company_id")
@@ -226,24 +268,6 @@ def news_and_sentiments():
     sentiment_score_definition = result['sentiment_score_definition']
    
     return render_template("market_news.html", news_sentiments=news_sentiments, sentiment_score_definition=sentiment_score_definition)
-
-@app.route('/company_news')
-def company_specific_news():
-    company_id = request.args.get("company_id")
-    company = crud.get_company_by_id(company_id)
-    url = f'https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers={company.ticker_symbol}&apikey={api_key}'
-
-    result = requests.get(url).json()
-    
-    news_sentiments = result['feed']
-  
-    sentiment_score_definition = result['sentiment_score_definition']
-   
-    return render_template("company_specific_news.html", news_sentiments=news_sentiments, sentiment_score_definition=sentiment_score_definition)
-
-@app.route('/gics_sector_tree')
-def get_sector_tree():
-    return render_template('gics_sectors_tree.html')
 
 if __name__ == "__main__":
     connect_to_db(app)

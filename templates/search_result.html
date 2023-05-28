@@ -1,22 +1,32 @@
-<title>News and Sentiments</title>
+<title>Search result</title>
 {% extends 'base.html' %}
 
 {% block body %}
-<div class="modal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Search result</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Modal body text goes here.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
+
+<div class="dropdown">
+    <div id="myDropdown" class="dropdown-content">
+        <input type="text" placeholder="Search here" id="myInput" onkeyup="filterFunction()">
+
+
+        {% for company in search_results%}
+
+        <a href=""> {{company.company_name }} {{company.ticker_symbol }} {{company.market_capital}}</a>
+
+        {% endfor %}
+
     </div>
 </div>
+
+<!-- <div id="search_results"> -->
+<!-- <div class=" dropdown row d-flex align-items-center me-auto "> -->
+<!-- <form action="/search" method="GET" class="d-flex my-auto" role="search">
+    <input class="form-control me-2" name="search_query" id="search_string" type="search" placeholder="Search"
+        aria-label="Search">
+</form> -->
+<!-- </div> -->
+<div>
+</div>
+</div>
+
+
 {% endblock %}

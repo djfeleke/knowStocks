@@ -1,128 +1,147 @@
+import { treeData } from "./gics_sectors.js";//./sectors_subindustries.js";
+// console.log(treeData);
 
 
-fetch("../../data/SectorsTreeMap.json")
-    .then((response) => response.json())
-    .then((data) => {
-        return data;
-    });
+let margin = { top: 10, right: 10, bottom: 20, left: 50 };
+let width = 1400 - margin.left - margin.right;
+let height = 1200 - margin.top - margin.bottom;
 
-
-const margin = { top: 20, right: 90, bottom: 20, left: 90 };
-const width = 960 - margin.left - margin.right;
-const height = 500 - margin.top - margin.bottom;
-const svg = d3
-    .select(".svg_main")
+let svg = d3
+    .select(".gics_tree")
     .append("svg")
     .attr("width", width + margin.right + margin.left)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
-    .attr("transform", "transalete(" + margin.left + "," + margin.top + ")")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-const i = 0;
-const duration = 750;
+let i = 0;
+let duration = 750;
 let root;
-const treemap = d3.tree().size(height, width);
-root = d3.hierarchy(data, function (d) {
+// const treemap = d3.layout.tree().size([height, width]);
+let treemap = d3.tree().size([height, width]);
+root = d3.hierarchy(treeData, function (d) {
     return d.children;
 });
 root.x0 = height / 2;
 root.y0 = 0;
-console.log("root", root);
+console.log("root ", root);
 
 update(root);
-function update(source) {
-    let treeData = treemap(root);
 
-    //nodes
-    let nodes = treeData.descendants();
+function update(source) {
+    var treeData = treemap(root);
+
+    // nodes
+    var nodes = treeData.descendants();
     nodes.forEach(function (d) {
-        d.y = d.depth * 180;
+        d.y = d.depth * 300;
     });
-    let node = svg.selectAll("g.node").data(nodes, function (d) {
+    var node = svg.selectAll("g.node").data(nodes, function (d) {
         return d.id || (d.id = ++i);
     });
-    let nodeEnter = node
+
+    var nodeEnter = node
         .enter()
         .append("g")
         .attr("class", "node")
         .attr("transform", function (d) {
-            return "translate(" + source.y0 + "," + source.x0 + ")";
+            return "translate(" + source.y0 + ", " + source.x0 + ")";
         })
-        .on("click", click)
+        .on("click", click);
+
     nodeEnter
         .append("circle")
         .attr("class", "node")
         .attr("r", 0)
         .style("fill", function (d) {
-            return d._children ? "green" : "black"
+            return d._children ? "red" : "#fff";
         });
 
     nodeEnter
-        .append('text')
-        .attr('dy', '.35em')
-        .attr('x', function (d) {
-            return d.children || d._children ? 13 : 13;
+        .append("text")
+        .attr("dy", ".35em")
+        .attr("x", function (d) {
+            return d.children || d._children ? -13 : 13;
         })
-        .attr('text-anchor', function (d) {
-            return d.children || d._children ? 'end' : 'start'
+        .attr("text-anchor", function (d) {
+            return d.children || d._children ? "middle" : "start";
         })
         .text(function (d) {
             return d.data.name;
-        })
+        });
+
     let nodeUpdate = nodeEnter.merge(node);
+
     nodeUpdate
         .transition()
         .duration(duration)
         .attr("transform", function (d) {
-            return "translate(" + d.y + "," + d.x + ")";
+            return "translate(" + d.y + ", " + d.x + ")";
         });
+
     nodeUpdate
         .select("circle.node")
-        .attr("r", 10)
+        .attr("r", 2)
         .style("fill", function (d) {
-            return d._children ? "green" : "black"
+            return d._children ? "black" : "#fff";
         })
         .attr("cursor", "pointer");
-    nodeExit = node
+
+    let nodeExit = node
         .exit()
         .transition()
         .duration(duration)
-        .attr('transform', function (d) {
-            return 'translate(' + source.y + ',' + source.x + ')'
+        .attr("transform", function (d) {
+            return "translate(" + source.y + "," + source.x + ")";
         })
         .remove();
 
-    nodeExit.select('text').style('fill-opacity', 0);
-    nodeExit.select('circle').attr('r', 0);
+    nodeExit.select("circle").attr("r", 0);
+    nodeExit.select("text").style("fill-opacity", 0);
 
     // links
     function diagonal(s, d) {
-        path = `M ${s.y}, ${d.y}
-        C ${(s.y + d.y) / 2} ${s.x}
-        ${(s.y + d.y) / 2} ${d.s}
-        ${d.y} ${d.x}`;
-
+        let path = `M ${s.y} ${s.x}
+            C ${(s.y + d.y) / 2} ${s.x}
+            ${(s.y + d.y) / 2} ${d.x}
+            ${d.y} ${d.x}`;
         return path;
     }
-
     let links = treeData.descendants().slice(1);
-    let link = svg.selectAll('path.link').data(links, function (d) {
+    let link = svg.selectAll("path.link").data(links, function (d) {
         return d.id;
-    })
-
-    let linkEnter = link
+    });
+    var linkEnter = link
         .enter()
-        .insert('path', 'g')
-        .attr('class', 'link')
-        .attr('d', function (d) {
-            let o = { x: source.x0, y: source.y0 } //may be change y0 to y
-            return diagonal(o, o)
+        .insert("path", "g")
+        .attr("class", "link")
+        .attr("d", function (d) {
+            var o = { x: source.x0, y: source.y0 };
+            return diagonal(o, o);
         });
     let linkUpdate = linkEnter.merge(link);
+    linkUpdate
+        .transition()
+        .duration(duration)
+        .attr("d", function (d) {
+            return diagonal(d, d.parent);
+        });
+
+    let linkExit = link
+        .exit()
+        .transition()
+        .duration(duration)
+        .attr("d", function (d) {
+            var o = { x: source.x0, y: source.y0 };
+            return diagonal(o, o);
+        })
+        .remove();
+
     nodes.forEach(function (d) {
         d.x0 = d.x;
         d.y0 = d.y;
     });
+
     function click(event, d) {
         if (d.children) {
             d._children = d.children;
@@ -134,3 +153,4 @@ function update(source) {
         update(d);
     }
 }
+

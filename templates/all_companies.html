@@ -2,25 +2,28 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<div class="container">
-    <p class="mx-auto my-3"><strong> If you want to search for a company of your
+<div class="container-fluid">
+
+    <p class="mx-auto my-3"><strong> The dataset contains over 21,000 records, if you want to search the company of your
             interest just start typing the name of the company and the result will get filtered out for your.</strong>
     </p>
     <div class="filter_company ">
-        <input type="text" class="filter" id="filter" placeholder="Search a company" onkeyup="searchReginalCompany()">
+        <input type="text" class="filter" id="filter" placeholder="Search a company" onkeyup="searchCompany()">
     </div>
-    <div id="reginal_companies" class="d-flex mx-auto table-responsive mt-4">
-        <table class="table table-responsive table-hover table-striped align-middle table-bordered">
+
+    <div class=" d-flex table-responsive mt-4">
+        <table id="all_companies"
+            class="table table-responsive table-hover table-striped align-middle table-bordered mx-auto">
             <thead>
                 <tr>
+
                     <th scope="col" class="text-center">S/N</th>
                     <th scope="col" class="text-center">Company Name</th>
                     <th scope="col" class="text-center">Ticker Symbol</th>
                     <th scope="col" class="text-center">Market Capital</th>
-                    <!-- <th scope="col" class="text-center">GICS Sector</th> -->
-                    <!-- <th scope="col" class="text-center">Region</th>
-                        <th scope="col" class="text-center">Remark</th> -->
-                    <!-- <th scope="col" class="text-center">Capital category</th>  -->
+                    <th scope="col" class="text-center">Region</th>
+                    <th scope="col" class="text-center">GICS Sector Name</th>
+                    <th scope="col" class="text-center">Capital category</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,13 +32,14 @@
 
                 <tr>
                     <td>{{loop.index}}</td>
-                    <td class="text-start"> <a
-                            href="{{url_for('view_company_details',company_id=company.id)}}">{{company.company_name}}</a>
+                    <td class="text-start" width="25%"> <a
+                            href="{{url_for('view_company_details')}}">{{company.company_name}}</a>
                     </td>
                     <td>{{company.ticker_symbol}}</td>
                     <td>{{company.market_capital|currencyFormat}}</td>
-                    <!-- <td>{{company.region_id}}</td> -->
-                    <!-- <td>{{company.category_by_capital_id}}</td> -->
+                    <td>{{company.region}}</td>
+                    <td>{{company.sector_name}}</td>
+                    <td>{{company.category}}</td>
                 </tr>
 
                 {% endfor %}

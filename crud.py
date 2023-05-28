@@ -1,5 +1,6 @@
 """CRUD operations."""
 from model import db, User_search, User, Income_statement, News_and_sentiments, Company_overview, Company,Category_by_capital, Region, GICS_sector, connect_to_db
+from sqlalchemy.orm import joinedload
 
 def create_gics_sector(id, sector_name):
     """Create and return a new gics_sector."""
@@ -76,7 +77,13 @@ def create_company(id,
     return company
 def get_all_companies():
     """ Return all existing companies. """
-    return Company.query.all()
+  
+    all_companies = db.session.query(Company, Region, GICS_sector, 
+                                     Category_by_capital).select_from(Company).join(Region).join(GICS_sector
+                                     ).join(Category_by_capital).all()
+    
+    return all_companies
+    # return Company.query.all()
 
 def get_companies_by_region(region):
     companies_by_region = db.session.query(Company.company_name, Region.region).join(Region).all()

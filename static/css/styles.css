@@ -1,3 +1,17 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:400,300,300italic,400italic,700,700italic);
+
+body,
+html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    left: 0;
+    top: 0;
+    font-size: 100%
+}
+
+
 body {
     background-color: rgb(252, 252, 252);
     font-size: 16px;
@@ -27,6 +41,11 @@ body {
 
 }
 
+th {
+    white-space: nowrap;
+}
+
+
 table tr td {
     font-size: medium;
     text-align: center;
@@ -37,13 +56,54 @@ table tr td {
     content: '$';
 }
 
-/* Styling homepage and News and sentiments pages cards */
+/* Styling homepage */
 .market_news_card,
 .home_page_card {
     padding: none;
 }
 
-@media screen and (max-width: 796px) {
+/* GICS sector hierarchical treemap */
+.xAxis path,
+.xAxis line {
+    stroke: rgb(245, 5, 173);
+    fill: #fb1616;
+    shape-rendering: crispEdges;
+}
+
+.xAxis text {
+    font-family: Optima, Futura, sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    fill: teal;
+}
+
+.node circle {
+    fill: #fb1616;
+    stroke: steelblue;
+    stroke-width: 3px;
+}
+
+.node text {
+    font: 12px sans-serif;
+    color: rgb(4, 95, 77);
+    font-weight: 400;
+}
+
+.link {
+    fill: none;
+    stroke: #929694;
+    stroke-width: 1px;
+}
+
+/* Search result page  */
+#filter {
+    width: 25%;
+    padding: 5px;
+    border-radius: 5px;
+
+}
+
+@media screen and (max-width: 800px) {
     .home_page_card {
         width: 98%;
     }
@@ -53,7 +113,7 @@ table tr td {
     }
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (min-width: 800px) {
     .home_page_card {
         width: 48%;
     }
@@ -72,19 +132,6 @@ table tr td {
         padding-left: 32px;
     }
 }
-
-
-
-
-/* Company details */
-/* .annual_income_statement>li,
-.quartely_income_statement>li,
-.quartely_balanacesheet>li,
-.annual_balancesheet>li,
-.overview_body>li {
-    list-style-type: square;
-    justify-content: center;
-} */
 
 .accordion-button::after {
     background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23333' xmlns='http://www.w3.org/2000/svg'%3e%3cpath fill-rule='evenodd' d='M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z' clip-rule='evenodd'/%3e%3c/svg%3e");

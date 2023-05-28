@@ -1,4 +1,5 @@
-{
+
+export const treeData = {
     "name": "GICS Sectors",
     "children": [
         {
@@ -288,15 +289,7 @@
                     "name": "Semiconductors & Semiconductor Equipment",
                     "children": [
                         {
-                            "name": "Semiconductors & Semiconductor Equipment",
-                            "children": [
-                                {
-                                    "name": "Semiconductor Materials & Equipment"
-                                },
-                                {
-                                    "name": "Semiconductors"
-                                }
-                            ]
+                            "name": "Semiconductors & Semiconductor Equipment"
                         }
                     ]
                 }

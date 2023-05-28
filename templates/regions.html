@@ -15,7 +15,6 @@
                     <th scope="col" class="text-center">Market Open</th>
                     <th scope="col" class="text-center">Market Close</th>
                     <th scope="col" class="text-center">Current Status</th>
-                    <!-- <th scope="col" class="text-center">Total Companies</th> -->
                     <th scope="col" class="text-center">Remark</th>
                 </tr>
             </thead>
@@ -25,8 +24,8 @@
                 <tr>
                     <td>{{region.id}}</td>
                     <td>{{region.market_type}}</td>
-                    <!-- <td><a href="{{url_for('companies_by_region')}}"> {{region.region}} </a></td> -->
-                    <td><a href="{{url_for('companies_by_region', region_id=region.id)}}">{{region.region}}</a></td>
+                    <td><a href="{{url_for('companies_by_region', region_id=region.id)}}">{{region.region}}</a>
+                    </td>
                     <td>{{region.primary_exchanges}}</td>
                     <td>{{region.local_open}}</td>
                     <td>{{region.local_close}}</td>

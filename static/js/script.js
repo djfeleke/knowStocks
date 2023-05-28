@@ -1,63 +1,87 @@
 /* implementing search functionaly */
+function searchCompany() {
+    let filter = document.getElementById("filter").value.toLowerCase();
+    let companyRecord = document.getElementById("all_companies");
+    let tr = companyRecord.getElementsByTagName("tr");
 
+    for (let i = 0; i < tr.length; i++) {
+        let td = tr[i].getElementsByTagName("td")[1];
+        if (td) {
+            let textvalue = td.textContent || td.innerHTML;
+            if (textvalue.toLowerCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            }
+            else {
+                tr[i].style.display = "none";
+            }
+
+        }
+    }
+}
+function searchReginalCompany() {
+    let filter = document.getElementById("filter").value.toLowerCase();
+    let companyRecord = document.getElementById("reginal_companies");
+    let tr = companyRecord.getElementsByTagName("tr");
+
+    for (let i = 0; i < tr.length; i++) {
+        let td = tr[i].getElementsByTagName("td")[1];
+        if (td) {
+            let textvalue = td.textContent || td.innerHTML;
+            if (textvalue.toLowerCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            }
+            else {
+                tr[i].style.display = "none";
+            }
+
+        }
+    }
+}
+/*
 const search_input = document.getElementById('search_string');
-const results = document.getElementById('search_results');
+const results = document.querySelector('#search_results');
 
-let search_term = '';
+let search_term = "";
 let companies;
 
 //get data
-const fetchCompanies = async () => {
-    const url = 'http://127.0.0.1:5000/search'
-    companies = await fetch(url)
-        .then(result => result.json());
+
+function fetchCompanies() {
+    fetch('/search')
+        .then((response) => response.json())
+        .then((data) => {
+            companies = data.map(x => x.company_name);
+            companies.sort();
+            showCompanies(companies, results)
+        })
 };
 
-const showCompanies = async () => {
-    results.innerHTML = '';
+function showCompanies(data, element) {
+    if (data) {
+        element.innerHTML = "";
+        let innerElement = "";
 
-    await fetchCompanies();
+        data.forEach((item) => {
+            innerElement += `
+            <li>${item}</li>`;
+        });
+        element.innerHTML = innerElement;
+    }
 
-    const ul = document.createElement('ul');
-    ul.classList.add('companies');
+    function filterData(data, search_term) {
 
-    companies
-        .filter(company =>
+        return data.filter(company =>
             company.company_name.toLowerCase().includes(search_term.toLowerCase())
             || company.ticker_symbol.toLowerCase().includes(search_term.toLowerCase())
-        )
-        .forEach(company => {
-            const li = document.createElement('li');
-            li.classList.add('company_item');
-
-            const compnay_info = document.createElement('p');
-            compnay_info.innerText = company.company_name + "" + company.ticker_symbol;
-            compnay_info.classList.add('company_info');
-
-            li.appendChild(company_info);
-
-            ul.appendChild(li);
-        });
-
-    results.appendChild(ul);
-};
-
-showCompanies();
-
-search_input.addEventListener('input', e => {
-    search_term = e.target.value;
-    showCompanies();
-});
-
-/*hiding empty list items*/
-
-const list_item = document.getElementsByTagName("li");
-if (list_item.node.textContent.trim() === "") {
-    list_item.style.display = none;
+        );
+    }
 }
 
-/*hiding open accordion upon click */
+fetchCompanies();
 
-$(document).ready(function () {
-    $('.collapse').collapse
-});
+search_input.addEventListener('input', function () {
+    const filteredData = filterData(companies, search_input.value);
+
+    showCompanies(filteredData, results);
+})
+*/
