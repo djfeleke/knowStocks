@@ -11,6 +11,12 @@ html {
     font-size: 100%
 }
 
+/* header {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+} */
 
 body {
     background-color: rgb(252, 252, 252);
@@ -41,10 +47,9 @@ body {
 
 }
 
-th {
-    white-space: nowrap;
+.login_register a {
+    margin-right: 25px;
 }
-
 
 table tr td {
     font-size: medium;
@@ -67,13 +72,13 @@ table tr td {
 .xAxis line {
     stroke: rgb(245, 5, 173);
     fill: #fb1616;
-    shape-rendering: crispEdges;
+    shape-rendering: geometricPrecision;
 }
 
 .xAxis text {
     font-family: Optima, Futura, sans-serif;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 13px;
     fill: teal;
 }
 
@@ -84,14 +89,14 @@ table tr td {
 }
 
 .node text {
-    font: 12px sans-serif;
-    color: rgb(4, 95, 77);
-    font-weight: 400;
+    font: 13px sans-serif;
+    color: rgba(0, 0, 0, 0.2);
+    font-weight: 300;
 }
 
 .link {
     fill: none;
-    stroke: #929694;
+    stroke: #54B4D3;
     stroke-width: 1px;
 }
 
@@ -100,6 +105,7 @@ table tr td {
     width: 25%;
     padding: 5px;
     border-radius: 5px;
+    border: #929694 solid 1px;
 
 }
 

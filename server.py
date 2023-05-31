@@ -1,15 +1,14 @@
 from flask import (Flask, render_template, request, flash, session, redirect, url_for, g, jsonify)
-import json
-from model import connect_to_db, db, Region
+from model import connect_to_db, db, Region, Company
 import requests
 import os
 from datetime import datetime 
 import datetime as dt
-import re
 import crud
 import random
 from flask import Blueprint
-from flask_paginate import Pagination, get_page_parameter
+from flask_paginate import Pagination, get_page_parameter, get_page_args
+
 from jinja2 import StrictUndefined
 
 app = Flask(__name__)
@@ -37,37 +36,13 @@ def date_time_format(value):
     minutes = int(value[11:13])
 
     formatted_date = datetime(year, month, day, hour, minutes)
-    if formatted_date >= datetime.today() - dt.timedelta(days=3):
-        formatted_date = formatted_date
-    # print("##############################################")
-        return formatted_date.strftime("%a, %d %b %Y  %H:%M")
+
+    return formatted_date.strftime("%a, %d %b %Y  %H:%M")
     
 @app.route('/')
 def homepage():
     """View homepage."""
     return render_template('index.html')
-
-@app.route('/search')
-def make_global_search():
-   
-    # search_query = request.args.get('search_query')
-    search_query = "New"
-    if search_query:
-        search_results = crud.get_search_company(search_query)
-
-        search_result_list = []
-        for search_result in search_results:
-            search_company = {"company_name": search_result.company_name, "ticker_symbol":search_result.ticker_symbol, "market_capital":search_result.market_capital }
-            search_result_list.append(search_company)
-        # search_results
-        # print(search_result_list)
-        # return jsonify(search_result_list)
-        return render_template('search_result.html', search_results=search_result_list)
-   
-    
-@app.route('/regional_search')
-def make_regional_search():
-    pass
 
 @app.route('/register')
 def user_register():
@@ -104,13 +79,17 @@ def user_login_process():
     email = request.form.get('email')
     password =  request.form.get('password')
     user = crud.get_user_by_email(email)
-  
-    print( email)
+
     if user and user.password == password:
         session['user'] = user.id
         flash('Logged in!', 'success')
+
     return redirect('/')
 
+@app.route('/logout')
+def logout_user():
+    session.pop('user', None)
+    return render_template('index.html')
 
 @app.route('/regions')
 def all_regions():
@@ -119,6 +98,7 @@ def all_regions():
     result = requests.get(url).json()
 
     regions_api = result['markets']
+    
     updated_regions = []
     for region in regions_api:
         update_region = crud.get_region_by_name(region['region'])
@@ -128,34 +108,57 @@ def all_regions():
             update_region.current_status = region['current_status']
 
             updated_regions.append(update_region)
-
+  
     updated_regions.sort(key = lambda x: x.id )
 
     return render_template("regions.html", regions=updated_regions)
-ROWS_PER_PAGE = 100
+
+# The function below constructed for pagination
+def get_pagination(page, per_page, total_items):
+    pagination = Pagination(page=page, per_page=per_page, total=total_items, css_framework='bootstrap5.2')
+    return pagination
+
 @app.route('/all_companies')
 def get_all_companies():
-
-    
     all_companies = crud.get_all_companies()
+
+    page = request.args.get('page', type=int, default=1)
+    per_page = 50  # Number of items per page
+   
+    total_items = len(all_companies)
+    pagination = get_pagination(page, per_page, total_items)
+    start = (page - 1) * per_page
+    end = start + per_page
 
     companies = []
     for company, region, gics_sector, category in all_companies:
         company_detail = {"company_id":company.id,
-                            "company_name": company.company_name, 
+                          "company_name": company.company_name, 
                           "ticker_symbol":company.ticker_symbol, 
                           "market_capital":company.market_capital, 
                           "region": region.region, 
                           "sector_name": gics_sector.sector_name, 
                           "category": category.category}
         companies.append(company_detail)
+    table_data = companies[start:end]
+    
+    # page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page', offset_parameter='offset')
+    # total_companies = len(companies)
+    # pagination_companies = get_companies(offset=offset, per_page=per_page)
+    # pagination = Pagination(page=page, per_page=per_page, total=total_companies, css_framework='bootstrap 5.2' )
 
-    # print(companies['info'])
-    return render_template("all_companies.html", companies = companies)
+    # companies.paginate(page=page, per_page=100)
+    return render_template("all_companies.html", 
+                           companies=table_data,
+                        #    paginated_companies=paginated_companies,
+                        #    companies_per_page=pagination_companies,
+                           page=page,
+                           per_page=per_page,
+                           pagination=pagination)
 
 @app.route('/companies')
 def companies_by_region():
-  
+    
     region_id = request.args.get("region_id")
     region = Region.query.get(region_id)
     all_company = region.companies

@@ -1,9 +1,8 @@
 import { treeData } from "./gics_sectors.js";//./sectors_subindustries.js";
-// console.log(treeData);
 
 
-let margin = { top: 10, right: 10, bottom: 20, left: 50 };
-let width = 1400 - margin.left - margin.right;
+let margin = { top: 10, right: 10, bottom: 20, left: 55 };
+let width = 1300 - margin.left - margin.right;
 let height = 1200 - margin.top - margin.bottom;
 
 let svg = d3
@@ -34,7 +33,8 @@ function update(source) {
     // nodes
     var nodes = treeData.descendants();
     nodes.forEach(function (d) {
-        d.y = d.depth * 300;
+        d.y = d.depth * 200;
+
     });
     var node = svg.selectAll("g.node").data(nodes, function (d) {
         return d.id || (d.id = ++i);

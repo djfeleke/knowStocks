@@ -2,6 +2,7 @@
 from model import db, User_search, User, Income_statement, News_and_sentiments, Company_overview, Company,Category_by_capital, Region, GICS_sector, connect_to_db
 from sqlalchemy.orm import joinedload
 
+
 def create_gics_sector(id, sector_name):
     """Create and return a new gics_sector."""
 
@@ -83,11 +84,9 @@ def get_all_companies():
                                      ).join(Category_by_capital).all()
     
     return all_companies
-    # return Company.query.all()
-
 def get_companies_by_region(region):
     companies_by_region = db.session.query(Company.company_name, Region.region).join(Region).all()
-
+    
     companies_in_region = []
     # import pdb; pdb.set_trace()
     for i, company in enumerate(companies_by_region):
@@ -96,11 +95,11 @@ def get_companies_by_region(region):
 
     return companies_in_region
 
-def get_search_company(search_query):
-    # print(search_query)
-    search = "%{}%".format(search_query)
-    results = Company.query.filter((Company.company_name.ilike(search))).all()
-    return results
+# def get_search_company(search_query):
+#     # print(search_query)
+#     search = "%{}%".format(search_query)
+#     results = Company.query.filter((Company.company_name.ilike(search))).all()
+#     return results
 
 def get_company_by_id(id):
     return Company.query.get(id)

@@ -1,14 +1,14 @@
 [
   {
     "id": 1,
-    "category": "micro-cap",
+    "category": "Micro-cap",
     "description": "Market capital under $300 million.",
     "lower_end": "0",
     "upper_end": " 3000000.00 "
   },
   {
     "id": 2,
-    "category": "small-cap",
+    "category": "Small-cap",
     "description": "Market capital between $300 million and $2 billion",
     "lower_end": "3000000.00",
     "upper_end": "2000000000.00"
