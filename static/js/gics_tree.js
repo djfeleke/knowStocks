@@ -1,12 +1,11 @@
-import { treeData } from "./gics_sectors.js";//./sectors_subindustries.js";
+import { treeData } from "./gics_sectors.js" //./sectors_subindustries.js";//./sectors_subindustries.js";
 
 
-let margin = { top: 10, right: 10, bottom: 20, left: 55 };
-let width = 1300 - margin.left - margin.right;
+let margin = { top: 20, right: 20, bottom: 20, left: 100 };
+let width = 1600 - margin.left - margin.right;
 let height = 1200 - margin.top - margin.bottom;
 
-let svg = d3
-    .select(".gics_tree")
+let svg = d3.select(".svg_main")
     .append("svg")
     .attr("width", width + margin.right + margin.left)
     .attr("height", height + margin.top + margin.bottom)
@@ -23,24 +22,24 @@ root = d3.hierarchy(treeData, function (d) {
 });
 root.x0 = height / 2;
 root.y0 = 0;
-console.log("root ", root);
 
 update(root);
 
 function update(source) {
-    var treeData = treemap(root);
+    let treeData = treemap(root);
 
     // nodes
-    var nodes = treeData.descendants();
+    let nodes = treeData.descendants();
     nodes.forEach(function (d) {
-        d.y = d.depth * 200;
+        d.y = d.depth * 250;
 
     });
-    var node = svg.selectAll("g.node").data(nodes, function (d) {
+
+    let node = svg.selectAll("g.node").data(nodes, function (d) {
         return d.id || (d.id = ++i);
     });
 
-    var nodeEnter = node
+    let nodeEnter = node
         .enter()
         .append("g")
         .attr("class", "node")
@@ -86,6 +85,7 @@ function update(source) {
             return d._children ? "black" : "#fff";
         })
         .attr("cursor", "pointer");
+    nodeUpdate.select("text").style("font-weight", 600);
 
     let nodeExit = node
         .exit()
@@ -96,7 +96,7 @@ function update(source) {
         })
         .remove();
 
-    nodeExit.select("circle").attr("r", 0);
+    nodeExit.select("circle").attr("r", 10);
     nodeExit.select("text").style("fill-opacity", 0);
 
     // links
@@ -153,4 +153,3 @@ function update(source) {
         update(d);
     }
 }
-

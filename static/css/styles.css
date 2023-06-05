@@ -1,4 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Lato:400,300,300italic,400italic,700,700italic);
+@import url(https://fonts.googleapis.com/css2?family=Chokokutai&display=swap);
 
 body,
 html {
@@ -9,6 +10,11 @@ html {
     left: 0;
     top: 0;
     font-size: 100%
+}
+
+h1 {
+    font-family: 'Chokokutai', cursive;
+    font-weight: 600;
 }
 
 /* header {
@@ -54,7 +60,7 @@ body {
 table tr td {
     font-size: medium;
     text-align: center;
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .market_capital:before {
@@ -68,10 +74,15 @@ table tr td {
 }
 
 /* GICS sector hierarchical treemap */
+.node {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 .xAxis path,
 .xAxis line {
-    stroke: rgb(245, 5, 173);
-    fill: #fb1616;
+    stroke: rgb(108, 107, 108);
+    fill: #696666;
     shape-rendering: geometricPrecision;
 }
 
@@ -79,7 +90,7 @@ table tr td {
     font-family: Optima, Futura, sans-serif;
     font-weight: bold;
     font-size: 13px;
-    fill: teal;
+    fill: rgb(33, 33, 33);
 }
 
 .node circle {
@@ -91,22 +102,43 @@ table tr td {
 .node text {
     font: 13px sans-serif;
     color: rgba(0, 0, 0, 0.2);
-    font-weight: 300;
+    font-weight: 500;
 }
 
 .link {
     fill: none;
-    stroke: #54B4D3;
+    stroke: #aaabab;
     stroke-width: 1px;
 }
 
-/* Search result page  */
+/* Search result page 
 #filter {
     width: 25%;
     padding: 5px;
     border-radius: 5px;
     border: #929694 solid 1px;
 
+}
+ */
+
+.sector_lable {
+
+    font-weight: 600;
+}
+
+.tree_node {
+    margin-right: 20px;
+    padding: 10px, 20px;
+
+}
+
+/* Company details page - Company overview*/
+
+.list_items {
+    font-weight: 600;
+    list-style: decimal-leading-zero;
+    justify-content: justify;
+    margin-left: 10px;
 }
 
 @media screen and (max-width: 800px) {
@@ -116,6 +148,10 @@ table tr td {
 
     body {
         font-size: 12px;
+    }
+
+    .category_level_filter .sector_level_filter .region_level_filter {
+        flex-direction: column;
     }
 }
 
@@ -127,6 +163,10 @@ table tr td {
     .ul_left_padding {
         padding-left: 32px;
     }
+
+    .category_level_filter .sector_level_filter .region_level_filter {
+        flex-direction: column;
+    }
 }
 
 @media screen and (min-width: 1200px) {
@@ -137,6 +177,18 @@ table tr td {
     .ul_left_padding {
         padding-left: 32px;
     }
+
+    .gics_tree_map {
+        margin-left: 250px;
+    }
+
+    .gics_tree_map li {
+        list-style: none;
+        margin-right: 250px;
+        font-weight: 700;
+    }
+
+
 }
 
 .accordion-button::after {

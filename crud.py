@@ -1,8 +1,7 @@
 """CRUD operations."""
 from model import db, User_search, User, Income_statement, News_and_sentiments, Company_overview, Company,Category_by_capital, Region, GICS_sector, connect_to_db
-from sqlalchemy.orm import joinedload
-
-
+from sqlalchemy.orm import joinedload, sessionmaker
+from datetime import datetime
 def create_gics_sector(id, sector_name):
     """Create and return a new gics_sector."""
 
@@ -76,6 +75,8 @@ def create_company(id,
                         region_id=region_id,
                         category_by_capital_id=category_by_capital_id)
     return company
+
+
 def get_all_companies():
     """ Return all existing companies. """
   
@@ -94,12 +95,6 @@ def get_companies_by_region(region):
             companies_by_region.append(company)
 
     return companies_in_region
-
-# def get_search_company(search_query):
-#     # print(search_query)
-#     search = "%{}%".format(search_query)
-#     results = Company.query.filter((Company.company_name.ilike(search))).all()
-#     return results
 
 def get_company_by_id(id):
     return Company.query.get(id)
@@ -223,6 +218,14 @@ def get_user_by_id(id):
 def get_user_by_email(email):
     return User.query.filter(User.email == email).first()
 
+def create_user_search(user_id, company_id, search_query):
+    user_search = User_search(search_query=search_query, user_id=user_id, company_id=company_id, search_time=datetime.now())
+    return user_search
+
+def get_saved_searches(user_id):
+    # results = User_search.query.filter(User_search.user_id == user_id).order_by(User_search.timestamp.desc()).all()
+
+    return User_search.query.filter(User_search.user_id==user_id).order_by(User_search.search_time.desc()).all()
 
 if __name__ == '__main__':
     from server import app

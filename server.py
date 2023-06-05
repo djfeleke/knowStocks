@@ -1,8 +1,9 @@
 from flask import (Flask, render_template, request, flash, session, redirect, url_for, g, jsonify)
-from model import connect_to_db, db, Region, Company
+from model import connect_to_db, db, Region, Company, User_search
 import requests
 import os
-from datetime import datetime 
+import re
+from datetime import datetime
 import datetime as dt
 import crud
 import random
@@ -37,8 +38,10 @@ def date_time_format(value):
 
     formatted_date = datetime(year, month, day, hour, minutes)
 
+    # if formatted_date > formatted_date - dt.timedelta(days=8):
     return formatted_date.strftime("%a, %d %b %Y  %H:%M")
-    
+
+
 @app.route('/')
 def homepage():
     """View homepage."""
@@ -82,9 +85,9 @@ def user_login_process():
 
     if user and user.password == password:
         session['user'] = user.id
-        flash('Logged in!', 'success')
+        flash('Successfuly logged in! Your previous searches have been saved for you, you searched for the following companies in one of your previous sessions.', 'success')
 
-    return redirect('/')
+    return redirect('/saved_searches')
 
 @app.route('/logout')
 def logout_user():
@@ -113,22 +116,9 @@ def all_regions():
 
     return render_template("regions.html", regions=updated_regions)
 
-# The function below constructed for pagination
-def get_pagination(page, per_page, total_items):
-    pagination = Pagination(page=page, per_page=per_page, total=total_items, css_framework='bootstrap5.2')
-    return pagination
-
 @app.route('/all_companies')
 def get_all_companies():
     all_companies = crud.get_all_companies()
-
-    page = request.args.get('page', type=int, default=1)
-    per_page = 50  # Number of items per page
-   
-    total_items = len(all_companies)
-    pagination = get_pagination(page, per_page, total_items)
-    start = (page - 1) * per_page
-    end = start + per_page
 
     companies = []
     for company, region, gics_sector, category in all_companies:
@@ -140,22 +130,11 @@ def get_all_companies():
                           "sector_name": gics_sector.sector_name, 
                           "category": category.category}
         companies.append(company_detail)
-    table_data = companies[start:end]
-    
-    # page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page', offset_parameter='offset')
-    # total_companies = len(companies)
-    # pagination_companies = get_companies(offset=offset, per_page=per_page)
-    # pagination = Pagination(page=page, per_page=per_page, total=total_companies, css_framework='bootstrap 5.2' )
 
-    # companies.paginate(page=page, per_page=100)
+
     return render_template("all_companies.html", 
-                           companies=table_data,
-                        #    paginated_companies=paginated_companies,
-                        #    companies_per_page=pagination_companies,
-                           page=page,
-                           per_page=per_page,
-                           pagination=pagination)
-
+                           companies=companies)
+# table_data
 @app.route('/companies')
 def companies_by_region():
     
@@ -178,76 +157,61 @@ def view_company_details():
    
     url1 = f'https://www.alphavantage.co/query?function=OVERVIEW&symbol={company.ticker_symbol}&apikey={api_key}'
     overview = requests.get(url1).json()
+    overview_content = {}
     if overview:
-        overview=overview
+      
+        for key, value in overview.items():
+
+            key = re.sub(r'(?<![A-Z\W])(?=[A-Z])', ' ', key)
+            overview_content[key] = value
     else:
-        overview = "No company overview is found for "+company.company_name
-    # overview_dict = json.loads(overview.text)
-    # ==================================================
-
-    # overview_content = {}
-    # for key, value in overview.items():
-    #     res_list = []
-    #     if re.match('\w*[A-Z][A-Z]\w+', key):
-    #         overview_content[key]=value
-    #     else:
-    #         res_list = re.findall('[A-Z][^A-Z]*', key)
-    #         res_list = ' '.join(res_list)
-    #         overview_content[res_list.capitalize()] = value
-
-    #======================================================
-    #      if(key == 'Description'):
-    #         overview_content['Description']=value
-    #     elif(key == 'DividendPerShare'):
-    #         overview_content['DividendPerShare']=value
-    #     elif(key == 'ProfitMargin'):
-    #         overview_content['ProfitMargin']=value
-    #     elif(key == 'QuarterlyEarningsGrowthYOY'):
-    #         overview_content['QuarterlyEarningsGrowthYOY']=value
-    #     elif(key == 'QuarterlyRevenueGrowthYOY'):
-    #         overview_content['QuarterlyRevenueGrowthYOY'] = value
-    #     elif(key == 'AnalystTargetPrice'):
-    #         overview_content['AnalystTargetPrice']=value
-    #     elif(key == '52WeekHigh'):
-    #         overview_content['52WeekHigh'] = value
-    #     elif(key == '52WeekLow'):
-    #         overview_content['52WeekLow']=value
-    #     elif(key == '50DayMovingAverage'):
-    #         overview_content['50DayMovingAverage'] =value
-    #     elif(key == '200DayMovingAverage'):
-    #         overview_content['200DayMovingAverage']=value
-    #     elif(key == 'DividendDate'):
-    #         overview_content['DividendDate']=value
-    #     elif(key == 'ExDividendDate'):
-    #         overview_content['ExDividendDate']=value
+        overview_content = "No company overview is found for "+company.company_name
    
     url2 = f'https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol={company.ticker_symbol}&apikey={api_key}'
     incomestatements = requests.get(url2).json()
-
+    mry_incomestatement_modified = {}
+    mrq_incomestatement_modified = {}
     if incomestatements:
         
         mrq_incomestatement = incomestatements['quarterlyReports'][0]
+
+        for key, value in mrq_incomestatement.items():
+            key = re.sub(r'(?<![A-Z\W])(?=[A-Z])', ' ', key)
+            mrq_incomestatement_modified[key] = value
+        
         mry_incomestatement = incomestatements['annualReports'][0]
+        for key, value in mry_incomestatement.items():
+            key = re.sub(r'(?<![A-Z\W])(?=[A-Z])', ' ', key)  
+            mry_incomestatement_modified[key] = value  
     else:
-        mrq_incomestatement = "No quarterly report has been found for "+company.company_name
-        mry_incomestatement = "No annual report has been found for "+company.company_name
+        mrq_incomestatement_modified = "No quarterly report has been found for "+company.company_name
+        mry_incomestatement_modified = "No annual report has been found for "+company.company_name
    
     url3 = f'https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol={company.ticker_symbol}&apikey={api_key}'
     balancesheets = requests.get(url3).json()
 
+    mrq_balancesheet_modified = {}
+    mry_balancesheet_modified = {}
     if balancesheets:
         mrq_balancesheet = balancesheets['quarterlyReports'][0]
+        for key, value in mrq_balancesheet.items():
+            key = re.sub(r'(?<![A-Z\W])(?=[A-Z])', ' ', key)  
+            mrq_balancesheet_modified[key] = value  
+
         mry_balancesheet = balancesheets['annualReports'][0] 
+        for key, value in mry_balancesheet.items():
+            key = re.sub(r'(?<![A-Z\W])(?=[A-Z])', ' ', key)  
+            mry_balancesheet_modified[key] = value  
     else:
-        mry_balancesheet = "No annual report has been found for "+company.company_name
-        mrq_balancesheet = "No quarterly report has been found for "+company.company_name
+        mry_balancesheet_modified = "No annual report has been found for "+company.company_name
+        mrq_balancesheet_modified = "No quarterly report has been found for "+company.company_name
 
     return render_template('company_details.html', 
-                           overview=overview, 
-                           mrq_incomestatement=mrq_incomestatement,
-                           mry_incomestatement=mry_incomestatement,
-                           mrq_balancesheet=mrq_balancesheet,
-                           mry_balancesheet=mry_balancesheet
+                           overview=overview_content, 
+                           mrq_incomestatement=mrq_incomestatement_modified,
+                           mry_incomestatement=mry_incomestatement_modified,
+                           mrq_balancesheet=mrq_balancesheet_modified,
+                           mry_balancesheet=mry_balancesheet_modified
                         )
 tickers = ["AAPL", "MSFT", "GOOGL", "AMZN","NVDA", "BRK-A","META","TSLA","TSM","V","UNH","XOM","JNJ","LLY","WMT","JPM","MA","PG",
 "CVX","HD","MRK","AVGO","NVO","ORCL","KO","ASML","PEP","ABBV","AZN","BAC","PFE","COST","BABA","NVS","MCD","CRM","CSCO",
@@ -255,9 +219,15 @@ tickers = ["AAPL", "MSFT", "GOOGL", "AMZN","NVDA", "BRK-A","META","TSLA","TSM","
 
 ticker = random.choice(tickers)
 
+# The function below constructed for pagination
+def get_pagination(page, per_page, total_items):
+    pagination = Pagination(page=page, per_page=per_page, total=total_items, css_framework='bootstrap5.2')
+    return pagination
+
 @app.route('/news')
 def news_and_sentiments():
     company_id = request.args.get("company_id")
+
     if company_id == None:
         url = f'https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers={ticker}&apikey={api_key}'
     else: 
@@ -269,9 +239,42 @@ def news_and_sentiments():
     news_sentiments = result['feed']
   
     sentiment_score_definition = result['sentiment_score_definition']
-   
-    return render_template("market_news.html", news_sentiments=news_sentiments, sentiment_score_definition=sentiment_score_definition)
 
+    page = request.args.get('page', type=int, default=1)
+    per_page = 6  # Number of items per page
+   
+    total_items = len(news_sentiments)
+    pagination = get_pagination(page, per_page, total_items)
+    start = (page - 1) * per_page
+    end = start + per_page
+
+    table_data = news_sentiments[start:end]
+    return render_template("market_news.html", news_sentiments=table_data, pagination=pagination, sentiment_score_definition=sentiment_score_definition)
+
+@app.route('/user_search', methods=['POST'])
+def user_search():
+
+    if 'user' in session:
+        user_id = session['user']
+        company_id = request.json.get('company_id')
+        filter = request.json.get('input')
+
+        user_search = crud.create_user_search(user_id, company_id, filter)
+        db.session.add(user_search)
+        db.session.commit()
+        return "User search saved successfully!"
+    return "search wasn't saved"
+
+@app.route('/saved_searches')
+def saved_searches():
+
+    if 'user' in session:
+        user_id = session['user']
+        saved_user_searches = crud.get_saved_searches(user_id)
+ 
+    return render_template('saved_searches.html', searches = saved_user_searches)
+
+    
 if __name__ == "__main__":
     connect_to_db(app)
     app.run(host="0.0.0.0", debug=True)

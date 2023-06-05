@@ -15,7 +15,7 @@
             <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
                 data-bs-parent="#accordionCompanyDetails">
                 <div class=" accordion-body justify-center">
-                    <ul class="overview_body">
+                    <ul class="overview_body col-md-6">
                         {% if overview is string %}
                         <p><strong> {{overview}}</strong></p>
 
@@ -23,13 +23,14 @@
                         {% for key, value in overview.items() %}
                         {% if key == 'Description' %}
                         <p><strong>{{key}}:</strong> {{value}}</p>
-                        {% endif %}
+                        {% else %}
                         {% if value not in ("None", "none","0",0,"-")%}
                         {% if key in("MarketCapitalization", "EBITDA", "RevenueTTM", "GrossProfitTTM",
                         "SharesOutstanding") %}
-                        <li> {{key}}: {{value|currencyFormat}}</li>
+                        <li class="list_items"> {{key}}: {{value|currencyFormat}}</li>
                         {% else %}
-                        <li>{{key}}: {{value}}</li>
+                        <li class="list_items">{{key}}: {{value}}</li>
+                        {% endif %}
                         {% endif %}
                         {% endif %}
                         {% endfor %}
@@ -60,10 +61,18 @@
                         <!-- <li>{{key}}: {{value}}</li> -->
                         {% if value not in ("None", "none") %}
                         <li class="list_items">
-                            {% if (key not in ("fiscalDateEnding", "reportedCurrency")) %}
-                            {{key}}: {{value|currencyFormat}}
-                            {% elif key in ("fiscalDateEnding", "reportedCurrency") %}
-                            {{key}}: {{value}}
+                            {% if key in ("Ebit","ebit", "Ebitda", "ebitda")%}
+                            {{ key|upper }}: {{value}}
+
+                            {% elif (key not in ("fiscalDateEnding", "Fiscal Date Ending", "fiscal Date Ending",
+                            "Reported
+                            Currency", "reported Currency", "reportedCurrency")) %}
+                            {{ key|capitalize }}: {{value|currencyFormat}}
+
+                            {% elif key in ("fiscalDateEnding", "Fiscal date ending", "fiscal Date Ending", "Reported
+                            currency", "reported Currency", "reportedCurrency") %}
+                            {{ key|capitalize }}: {{value}}
+
                             {% endif %}
 
                         </li>
@@ -80,10 +89,18 @@
                         {% for key, value in mry_incomestatement.items() %}
                         {% if value not in ("None", "none") %}
                         <li class="list_items">
-                            {% if (key not in ("fiscalDateEnding", "reportedCurrency")) %}
-                            {{key}}: {{value|currencyFormat}}
-                            {% elif key in ("fiscalDateEnding", "reportedCurrency") %}
-                            {{key}}: {{value}}
+                            {% if key in ("Ebit","ebit", "Ebitda", "ebitda")%}
+                            {{ key|upper }}: {{value}}
+
+                            {% elif (key not in ("fiscalDateEnding", "Fiscal date ending", "fiscal Date Ending",
+                            "Reported
+                            currency", "reported Currency", "reportedCurrency")) %}
+                            {{ key|capitalize }}: {{value|currencyFormat}}
+
+                            {% elif key in ("fiscalDateEnding", "Fiscal Date Ending", "fiscal Date Ending", "Reported
+                            Currency", "reported Currency", "reportedCurrency") %}
+                            {{ key|capitalize }}: {{value}}
+
                             {% endif %}
 
                         </li>
@@ -122,10 +139,12 @@
 
                         {% if value not in ("None", "none") %}
                         <li class="list_items">
-                            {% if (key not in ("fiscalDateEnding", "reportedCurrency")) %}
-                            {{key}}: {{value|currencyFormat}}
-                            {% elif key in ("fiscalDateEnding", "reportedCurrency") %}
-                            {{key}}: {{value}}
+                            {% if (key not in ("fiscalDateEnding", "Fiscal date ending", "fiscal Date Ending",
+                            "Reported currency", "reported Currency", "reportedCurrency")) %}
+                            {{ key|capitalize }}: {{value|currencyFormat}}
+                            {% elif key in ("fiscalDateEnding", "Fiscal date ending", "fiscal Date Ending",
+                            "Reported currency", "reported Currency", "reportedCurrency") %}
+                            {{ key|capitalize }}: {{value}}
                             {% endif %}
 
                         </li>
@@ -143,14 +162,16 @@
                         {% for key, value in mry_balancesheet.items() %}
                         {% if value not in ("None", "none") %}
 
-                        <li>
+                        <li class="list_items">
                             <!-- {{key}}: {{value}} -->
-                            {% if (key not in ("fiscalDateEnding", "reportedCurrency")) %}
+                            {% if (key not in ("fiscalDateEnding", "Fiscal date ending", "fiscal Date Ending",
+                            "Reported currency", "reported Currency", "reportedCurrency")) %}
 
-                            {{key}}: {{value|currencyFormat}}
+                            {{ key|capitalize }}: {{value|currencyFormat}}
 
-                            {% elif key in ("fiscalDateEnding", "reportedCurrency") %}
-                            {{key}}: {{value}}
+                            {% elif key in ("fiscalDateEnding", "Fiscal date ending", "fiscal Date Ending",
+                            "Reported currency", "reported Currency", "reportedCurrency") %}
+                            {{ key|capitalize }}: {{value}}
                             {% endif %}
                         </li>
 

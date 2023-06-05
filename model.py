@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-
+from datetime import datetime
 db = SQLAlchemy()
 
 class GICS_sector(db.Model):
@@ -173,14 +173,16 @@ class User_search(db.Model):
     id = db.Column(db.Integer, 
                     autoincrement=True,
                     primary_key=True)
+    search_query = db.Column(db.String)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     company_id = db.Column(db.Integer, db.ForeignKey('companies.id'))
+    search_time = db.Column(db.DateTime, nullable=False)
 
     users = db.relationship('User', back_populates='users_searches')
     companies = db.relationship('Company', back_populates='users_searches')
 
     def __repr__(self):
-        return f'<User_search id={self.id} first_name={self.first_name} last_name={self.last_name}>'
+        return f'<User_search id={self.id} user_id={self.user_id} search_query={self.search_query}>'
 
 def connect_to_db(flask_app, db_uri="postgresql:///stocks", echo=True):
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri

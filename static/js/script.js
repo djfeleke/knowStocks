@@ -1,4 +1,27 @@
+// implementing user search 
+const headers = {
+    'Content-Type': 'application/json'
+}
 
+function userSearchCompany(company_id) {
+    // alert(company_id)
+    input = document.getElementById('filter').value;
+    body = { 'company_id': company_id, 'input': input }
+
+    fetch('/user_search', {
+        method: 'POST',
+        body: JSON.stringify(body),
+        headers: headers
+    }).then(response => response.text())
+        .then(data => {
+            console.log(data)
+        })
+}
+
+
+
+
+//fixing the navigation at the top
 document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener('scroll', function () {
         if (window.scrollY > 50) {
@@ -13,6 +36,80 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+function applyFiltersAndSearch() {
+    const selectedRegion = document.getElementById('filter_region').value;
+    const selectedCategory = document.getElementById('filter_category').value;
+    const selectedSector = document.getElementById('filter_sector').value;
+    // let searchKeyword = document.getElementById('filter').value.toLowerCase();
+
+    const rows = document.querySelectorAll('#all_companies tbody tr');
+
+    for (let i = 0; i < rows.length; i++) {
+        let category = rows[i].querySelector('td[data-category]').getAttribute('data-category');
+        let region = rows[i].querySelector('td[data-region]').getAttribute('data-region');
+        let sector = rows[i].querySelector('td[data-sector_name]').getAttribute('data-sector_name');
+        // let company = rows[i].querySelector('td[data-company]').getAttribute('data-company').toLowerCase();
+
+
+        let regionMatch = selectedRegion === '' || region === selectedRegion;
+        let categoryMatch = selectedCategory === '' || category === selectedCategory;
+        let sectorMatch = selectedSector === '' || sector === selectedSector;
+        // var searchMatch = company.includes(searchKeyword);
+
+        if (regionMatch && categoryMatch && sectorMatch) {
+            rows[i].style.display = '';
+        } else {
+            rows[i].style.display = 'none';
+        }
+    }
+}
+
+document.getElementById('filter_sector').addEventListener('change', applyFiltersAndSearch);
+document.getElementById('filter_category').addEventListener('change', applyFiltersAndSearch);
+document.getElementById('filter_region').addEventListener('change', applyFiltersAndSearch);
+// document.getElementById('filter').addEventListener('input', applyFiltersAndSearch);
+
+function searchReginalCompany() {
+    let filter = document.getElementById("filter").value.toLowerCase();
+    let companyRecord = document.getElementById("reginal_companies");
+    let tr = companyRecord.getElementsByTagName("tr");
+
+    for (let i = 0; i < tr.length; i++) {
+        let td = tr[i].getElementsByTagName("td")[1];
+        if (td) {
+            let textvalue = td.textContent || td.innerHTML;
+            if (textvalue.toLowerCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            }
+            else {
+                tr[i].style.display = "none";
+            }
+
+        }
+    }
+}
+
+/*
+function searchCompany() {
+    let filter = document.getElementById("filter").value.toLowerCase();
+    let companyRecord = document.getElementById("all_companies");
+    let tr = companyRecord.getElementsByTagName("tr");
+
+    for (let i = 0; i < tr.length; i++) {
+        let td = tr[i].getElementsByTagName("td")[1];
+        if (td) {
+            let textvalue = td.textContent || td.innerHTML;
+            if (textvalue.toLowerCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            }
+            else {
+                tr[i].style.display = "none";
+            }
+
+        }
+    }
+}
 
 function searchCompany() {
     let filter = document.getElementById("filter").value.toLowerCase();
@@ -33,70 +130,53 @@ function searchCompany() {
         }
     }
 }
-function searchReginalCompany() {
-    let filter = document.getElementById("filter").value.toLowerCase();
-    let companyRecord = document.getElementById("reginal_companies");
-    let tr = companyRecord.getElementsByTagName("tr");
 
-    for (let i = 0; i < tr.length; i++) {
-        let td = tr[i].getElementsByTagName("td")[1];
-        if (td) {
-            let textvalue = td.textContent || td.innerHTML;
-            if (textvalue.toLowerCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-            }
-            else {
-                tr[i].style.display = "none";
-            }
+document.getElementById('filter_category').addEventListener('change', function () {
+    const selectedOption = this.value;
+    const rows = document.querySelectorAll('#all_companies tbody tr');
 
+    for (let i = 0; i < rows.length; i++) {
+
+        let category = rows[i].querySelector('td[data-category]').getAttribute('data-category');
+
+        if (selectedOption === '' || category === selectedOption) {
+            rows[i].style.display = '';
+        }
+        else {
+            rows[i].style.display = 'none';
         }
     }
-}
-/*
-const search_input = document.getElementById('search_string');
-const results = document.querySelector('#search_results');
+});
 
-let search_term = "";
-let companies;
+document.getElementById('filter_region').addEventListener('change', function () {
+    const selectedOption = this.value;
+    const rows = document.querySelectorAll('#all_companies tbody tr');
 
-//get data
+    for (let i = 0; i < rows.length; i++) {
+        let region = rows[i].querySelector('td[data-region]').getAttribute('data-region');
 
-function fetchCompanies() {
-    fetch('/search')
-        .then((response) => response.json())
-        .then((data) => {
-            companies = data.map(x => x.company_name);
-            companies.sort();
-            showCompanies(companies, results)
-        })
-};
-
-function showCompanies(data, element) {
-    if (data) {
-        element.innerHTML = "";
-        let innerElement = "";
-
-        data.forEach((item) => {
-            innerElement += `
-            <li>${item}</li>`;
-        });
-        element.innerHTML = innerElement;
+        if (selectedOption === '' || region === selectedOption) {
+            rows[i].style.display = '';
+        }
+        else {
+            rows[i].style.display = 'none';
+        }
     }
+});
+document.getElementById('filter_sector').addEventListener('change', function () {
+    const selectedOption = this.value;
+    const rows = document.querySelectorAll('#all_companies tbody tr');
 
-    function filterData(data, search_term) {
+    for (let i = 0; i < rows.length; i++) {
 
-        return data.filter(company =>
-            company.company_name.toLowerCase().includes(search_term.toLowerCase())
-            || company.ticker_symbol.toLowerCase().includes(search_term.toLowerCase())
-        );
+        let sector = rows[i].querySelector('td[data-sector_name]').getAttribute('data-sector_name');
+
+        if (selectedOption === '' || sector === selectedOption) {
+            rows[i].style.display = '';
+        }
+        else {
+            rows[i].style.display = 'none';
+        }
     }
-}
-
-fetchCompanies();
-
-search_input.addEventListener('input', function () {
-    const filteredData = filterData(companies, search_input.value);
-
-    showCompanies(filteredData, results);
-})
+});
 */

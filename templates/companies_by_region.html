@@ -3,12 +3,13 @@
 
 {% block body %}
 <div class="container">
-    <p class="mx-auto my-3"><strong> If you want to search for a company of your
-            interest just start typing the name of the company and the result will get filtered out for your.</strong>
-    </p>
+    <h5 class="mx-auto my-3 text-center"><strong> Search for a company of your
+            interest by typing the company name or it's ticker symbol and the result will get filtered out for
+            you.</strong>
+    </h5>
     <div class="filter_company me-5 d-flex justify-content-center align-items-center">
         <label for="filter" class="me-2 align-middle"><strong> Search: </strong></label>
-        <input type="text" class="filter" id="filter" placeholder="Type here to search a company"
+        <input type="text" name="filter" class="filter" id="filter" placeholder="Type here to search a company"
             onkeyup="searchReginalCompany()">
 
     </div>
@@ -32,7 +33,7 @@
 
                 <tr>
                     <td>{{loop.index}}</td>
-                    <td class="text-start"> <a
+                    <td class="text-start" onclick="userSearchCompany('{{company.id}}')"> <a
                             href="{{url_for('view_company_details',company_id=company.id)}}">{{company.company_name}}</a>
                     </td>
                     <td>{{company.ticker_symbol}}</td>
