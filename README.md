@@ -75,3 +75,9 @@ All companies the webapp provide can be accessed here, the user may use differen
 User can have access to the basic company financial fundamentals. specifically balance sheets and income statements.
 
 ![User may create a new account or login to their existing account](/static/image/screen-shots/Company%20fundamentals.png). 
+
+## Version 2.0
+
+***More d3 chart:*** Hourly trading market price chart
+***Password hashing:*** Password hashing will be implement to protect user's passwords'
+***Additional language support:*** Information will be provided with one more additionla language 
