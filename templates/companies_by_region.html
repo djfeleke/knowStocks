@@ -4,12 +4,12 @@
 {% block body %}
 <div class="container">
     <h5 class="mx-auto my-3 text-center"><strong> Search for a company of your
-            interest by typing the company name or it's ticker symbol and the result will get filtered out for
+            interest by typing the company name or it's ticker symbol, the data will get filtered out for
             you.</strong>
     </h5>
     <div class="filter_company me-5 d-flex justify-content-center align-items-center">
         <label for="filter" class="me-2 align-middle"><strong> Search: </strong></label>
-        <input type="text" name="filter" class="filter" id="filter" placeholder="Type here to search a company"
+        <input type="text" name="filter" class="filter" id="filter" placeholder="Type here to search"
             onkeyup="searchReginalCompany()">
 
     </div>
@@ -21,10 +21,7 @@
                     <th scope="col" class="text-center">Company Name</th>
                     <th scope="col" class="text-center">Ticker Symbol</th>
                     <th scope="col" class="text-center">Market Capital</th>
-                    <!-- <th scope="col" class="text-center">GICS Sector</th> -->
-                    <!-- <th scope="col" class="text-center">Region</th>
-                        <th scope="col" class="text-center">Remark</th> -->
-                    <!-- <th scope="col" class="text-center">Capital category</th>  -->
+
                 </tr>
             </thead>
             <tbody>
@@ -38,8 +35,6 @@
                     </td>
                     <td>{{company.ticker_symbol}}</td>
                     <td>{{company.market_capital|currencyFormat}}</td>
-                    <!-- <td>{{company.region_id}}</td> -->
-                    <!-- <td>{{company.category_by_capital_id}}</td> -->
                 </tr>
 
                 {% endfor %}

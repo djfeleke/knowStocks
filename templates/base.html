@@ -13,7 +13,6 @@
 
     <script src="https://kit.fontawesome.com/f26eda05ad.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://d3js.org/d3.v7.min.js"></script>
-    <!-- <script src="https://unpkg.com/d3-selection-multi@2.0.0/build/d3-selection-multi.min.js"></script> -->
     <link rel="stylesheet" href="../static/css/styles.css">
 
 </head>
@@ -23,11 +22,11 @@
     {% block header %}
 
     <header id="wrapper">
-
+        <!-- 
         <div class=" main-header d-flex align-center justify-center">
             <h1 class="d-flex mx-auto py-2 "><strong class="">Welecome</strong></h1>
 
-        </div>
+        </div> -->
 
         <nav id="navbar_top" class="navbar navbar-default navbar-expand-sm d-flex align-center bg-info py-1 px-0">
 
@@ -100,23 +99,18 @@
             </div>
         </nav>
     </header>
+
     {% endblock %}
 
-    <div class="search_result">
-        <ul id="search_result">
-
-        </ul>
-    </div>
-
-    <div class="container-fluid" mb-0 pb-1>
+    <div class="container-fluid mt-2" mb-0 pb-1>
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-12 text-align-center">
                 {% with messages = get_flashed_messages(category_filter="success") %}
                 {% if messages %}
                 <!-- <ul class=flashes> -->
                 {% for message in messages %}
 
-                <div class="alert text-align-center alert alert-success alert-dismissible fade show">{{ message }}
+                <div class="alert text-center alert alert-success alert-dismissible fade show">{{ message }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
 
@@ -125,13 +119,13 @@
                 {% endif %}
                 {% endwith %}
             </div>
-            <div class="col-sm-4">
+            <div class="col-12 text-align-center">
                 {% with messages = get_flashed_messages(category_filter="warning") %}
                 {% if messages %}
                 <!-- <ul class=flashes> -->
                 {% for message in messages %}
 
-                <div class="alert text-align-center alert alert-warning alert-dismissible fade show">{{ message }}
+                <div class="alert text-center alert alert-warning alert-dismissible fade show">{{ message }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
 
@@ -140,13 +134,13 @@
                 {% endif %}
                 {% endwith %}
             </div>
-            <div class="col-sm-4">
+            <div class="col-12 ">
                 {% with messages = get_flashed_messages(category_filter="danger") %}
                 {% if messages %}
                 <!-- <ul class=flashes> -->
                 {% for message in messages %}
 
-                <div class="alert text-align-center alert alert-danger alert-dismissible fade show">{{ message }}
+                <div class="alert text-center alert alert-danger alert-dismissible fade show">{{ message }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
 

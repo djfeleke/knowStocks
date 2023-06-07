@@ -2,8 +2,10 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<div class="container mt-4 ">
+<div class="container mt-3 ">
+    <h3 class="mx-auto my-3 text-center"> Fundamentals of {{company_name}}.</h3>
     <div class="accordion accordion-flush" id="accordionCompanyDetails">
+
         <div class="accordion-item border border-success">
             <div class="accordion-header" id="flush-headingOne">
 
@@ -187,17 +189,18 @@
 
                     <button class="btn-accordion accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
-                        <h3> <i class="fa-solid fa-radio me-2"></i> <em>Company specific news</em></h3>
+                        <h3> <i class="fa-solid fa-radio me-2"></i> <em>Check market news</em></h3>
                     </button>
                 </div>
                 <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour"
                     data-bs-parent="#accordionCompanyDetails">
                     <div class=" accordion-body justify-center">
-                        <p><a href="{{url_for('news_and_sentiments')}}"><strong>Get company specific news</strong></a>
+                        <p><a href="{{url_for('news_and_sentiments')}}"><strong>Go to news</strong></a>
                         </p>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>

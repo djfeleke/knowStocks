@@ -104,7 +104,7 @@ function update(source) {
         let path = `M ${s.y} ${s.x}
             C ${(s.y + d.y) / 2} ${s.x}
             ${(s.y + d.y) / 2} ${d.x}
-            ${d.y} ${d.x}`;
+            ${d.y} ${d.x} `;
         return path;
     }
     let links = treeData.descendants().slice(1);

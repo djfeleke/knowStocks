@@ -1,5 +1,8 @@
 from flask import (Flask, render_template, request, flash, session, redirect, url_for, g, jsonify)
 from model import connect_to_db, db, Region, Company, User_search
+from alpha_vantage.timeseries import TimeSeries
+import matplotlib.pyplot as plt
+import pandas as pd
 import requests
 import os
 import re
@@ -83,11 +86,21 @@ def user_login_process():
     password =  request.form.get('password')
     user = crud.get_user_by_email(email)
 
-    if user and user.password == password:
+    if not user or user is None:
+        flash("We don't find that email in our system, please register or try with a different email address.", "danger")
+        return redirect('/login')
+    elif user and user.password == password:
         session['user'] = user.id
-        flash('Successfuly logged in! Your previous searches have been saved for you, you searched for the following companies in one of your previous sessions.', 'success')
+        if crud.get_saved_searches(user.id):
+            flash('Successfuly logged in! Your previous searches have been saved for you, you searched for the following companies in one of your previous sessions.', 'success')
+            return redirect('/saved_searches')
+        else:
+            flash('Successfuly logged in!', 'success')
+            return redirect('/')
 
-    return redirect('/saved_searches')
+    else:
+        flash("Password don't match, please try again.", "warning")
+        return redirect('/login')
 
 @app.route('/logout')
 def logout_user():
@@ -154,7 +167,7 @@ def get_sector_tree():
 def view_company_details():
     company_id = request.args.get("company_id")
     company = crud.get_company_by_id(company_id)
-   
+    name = company.company_name
     url1 = f'https://www.alphavantage.co/query?function=OVERVIEW&symbol={company.ticker_symbol}&apikey={api_key}'
     overview = requests.get(url1).json()
     overview_content = {}
@@ -211,8 +224,10 @@ def view_company_details():
                            mrq_incomestatement=mrq_incomestatement_modified,
                            mry_incomestatement=mry_incomestatement_modified,
                            mrq_balancesheet=mrq_balancesheet_modified,
-                           mry_balancesheet=mry_balancesheet_modified
+                           mry_balancesheet=mry_balancesheet_modified,
+                           company_name = name
                         )
+
 tickers = ["AAPL", "MSFT", "GOOGL", "AMZN","NVDA", "BRK-A","META","TSLA","TSM","V","UNH","XOM","JNJ","LLY","WMT","JPM","MA","PG",
 "CVX","HD","MRK","AVGO","NVO","ORCL","KO","ASML","PEP","ABBV","AZN","BAC","PFE","COST","BABA","NVS","MCD","CRM","CSCO",
 "TMO","TM","ACN","ABT","AMD","LIN","TMUS","DHR","ADBE","CMCSA","NKE","NFLX","DIS"]
@@ -249,6 +264,7 @@ def news_and_sentiments():
     end = start + per_page
 
     table_data = news_sentiments[start:end]
+    
     return render_template("market_news.html", news_sentiments=table_data, pagination=pagination, sentiment_score_definition=sentiment_score_definition)
 
 @app.route('/user_search', methods=['POST'])
@@ -260,9 +276,10 @@ def user_search():
         filter = request.json.get('input')
 
         user_search = crud.create_user_search(user_id, company_id, filter)
-        db.session.add(user_search)
-        db.session.commit()
-        return "User search saved successfully!"
+        if user_search:
+            db.session.add(user_search)
+            db.session.commit()
+            return "User search saved successfully!"
     return "search wasn't saved"
 
 @app.route('/saved_searches')
@@ -271,8 +288,10 @@ def saved_searches():
     if 'user' in session:
         user_id = session['user']
         saved_user_searches = crud.get_saved_searches(user_id)
- 
-    return render_template('saved_searches.html', searches = saved_user_searches)
+    if saved_user_searches:
+        return render_template('saved_searches.html', searches = saved_user_searches)
+    else:
+        return redirect('/')
 
     
 if __name__ == "__main__":

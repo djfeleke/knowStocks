@@ -17,13 +17,6 @@ h1 {
     font-weight: 600;
 }
 
-/* header {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-} */
-
 body {
     background-color: rgb(252, 252, 252);
     font-size: 16px;
@@ -34,23 +27,71 @@ body {
 }
 
 #footer {
-    /* flex: 0 0 50px; */
-    /*or just height:50px;*/
+
     margin-top: auto;
     position: absolute;
     bottom: 0;
     width: 100%;
 }
 
+.nav-item a:hover {
+    background-color: rgb(158, 248, 242);
+}
 
-.main-header {
-    background-image: url(../image/cloud-sky.jpg);
+.nav-item a:active {
+    background-color: rgb(98, 96, 96);
 }
 
 .main-link {
     color: rgb(0, 127, 139);
     font-weight: 700;
 
+}
+
+#background-video {
+    object-fit: cover;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    margin-top: 0px;
+    left: 0;
+}
+
+.viewport-header {
+    position: relative;
+    margin-top: 15pc;
+    height: 100vh;
+    text-align: center;
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 100px;
+}
+
+.viewport-header-2 {
+    position: relative;
+    height: 30vh;
+    text-align: center;
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 80px;
+}
+
+.index_body {
+    position: relative;
+    height: 100vh;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+#quote_owner {
+    font-size: 40px;
 }
 
 .login_register a {
@@ -73,10 +114,21 @@ table tr td {
     padding: none;
 }
 
+.home_page_card {
+    align-items: center;
+    justify-content: center;
+}
+
 /* GICS sector hierarchical treemap */
+
 .node {
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+.sector_lable {
+    display: inline-block;
+    font-weight: 600;
 }
 
 .xAxis path,
@@ -111,27 +163,6 @@ table tr td {
     stroke-width: 1px;
 }
 
-/* Search result page 
-#filter {
-    width: 25%;
-    padding: 5px;
-    border-radius: 5px;
-    border: #929694 solid 1px;
-
-}
- */
-
-.sector_lable {
-
-    font-weight: 600;
-}
-
-.tree_node {
-    margin-right: 20px;
-    padding: 10px, 20px;
-
-}
-
 /* Company details page - Company overview*/
 
 .list_items {
@@ -142,9 +173,6 @@ table tr td {
 }
 
 @media screen and (max-width: 800px) {
-    .home_page_card {
-        width: 98%;
-    }
 
     body {
         font-size: 12px;
@@ -153,12 +181,25 @@ table tr td {
     .category_level_filter .sector_level_filter .region_level_filter {
         flex-direction: column;
     }
+
+    .background-video>#background-video {
+        display: none;
+        margin-top: 0;
+    }
+
+    #carouselIndicators {
+        display: none;
+        margin-top: 0;
+    }
+
+    .viewport-header-2 {
+        font-size: 30px;
+        color: black;
+    }
 }
 
 @media screen and (min-width: 800px) {
-    .home_page_card {
-        width: 48%;
-    }
+
 
     .ul_left_padding {
         padding-left: 32px;
@@ -170,9 +211,6 @@ table tr td {
 }
 
 @media screen and (min-width: 1200px) {
-    .home_page_card {
-        width: 31.5%;
-    }
 
     .ul_left_padding {
         padding-left: 32px;

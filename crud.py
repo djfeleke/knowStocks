@@ -220,13 +220,15 @@ def get_user_by_email(email):
 
 def create_user_search(user_id, company_id, search_query):
     user_search = User_search(search_query=search_query, user_id=user_id, company_id=company_id, search_time=datetime.now())
-    return user_search
+    if user_search:
+        return user_search
 
 def get_saved_searches(user_id):
-    # results = User_search.query.filter(User_search.user_id == user_id).order_by(User_search.timestamp.desc()).all()
-
-    return User_search.query.filter(User_search.user_id==user_id).order_by(User_search.search_time.desc()).all()
-
+  
+    user_specific_search = User_search.query.filter(User_search.user_id==user_id).order_by(User_search.search_time.desc()).all()
+    if user_specific_search: 
+        return user_specific_search
+    
 if __name__ == '__main__':
     from server import app
     connect_to_db(app)
