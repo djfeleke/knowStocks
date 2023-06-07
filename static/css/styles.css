@@ -193,7 +193,7 @@ table tr td {
     }
 
     .viewport-header-2 {
-        font-size: 30px;
+        font-size: 25px;
         color: black;
     }
 }
@@ -226,6 +226,9 @@ table tr td {
         font-weight: 700;
     }
 
+    .viewport-header-2 {
+        font-size: 70px;
+    }
 
 }
 
