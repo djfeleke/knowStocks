@@ -43,6 +43,6 @@ The AlphaVantage API, https://stockmarketmba.com/index.php website and Wikipedia
 
 Enen though it not required to access the content of the webapp, a user may create an account inorder to save their searches if they want to use it for future reference.  
 
-[User may create/login](/static/image/screen-shots/Registration-Login page.png).
+![User may create/login](/static/image/screen-shots/Registration-Login page.png).
 
 
