@@ -82,5 +82,3 @@ User can have access to the basic company financial fundamentals. specifically b
 ***Password hashing:*** Password hashing will be implement to protect user's passwords'
 
 ***Additional language support:*** Information will be provided with one more additionla language 
-
-## License
