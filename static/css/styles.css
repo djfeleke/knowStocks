@@ -119,6 +119,14 @@ table tr td {
     justify-content: center;
 }
 
+/* Regional companies search */
+#filter {
+    width: 250px;
+    border-radius: 5px;
+    margin-top: 5px;
+    padding-left: 10px;
+}
+
 /* GICS sector hierarchical treemap */
 
 .node {
@@ -167,7 +175,7 @@ table tr td {
 
 .list_items {
     font-weight: 600;
-    list-style: decimal-leading-zero;
+    list-style: disc;
     justify-content: justify;
     margin-left: 10px;
 }
