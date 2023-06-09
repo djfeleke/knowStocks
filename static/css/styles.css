@@ -136,7 +136,13 @@ table tr td {
 
 .sector_lable {
     display: inline-block;
-    font-weight: 600;
+    font-weight: 700;
+    font-size: large;
+    margin-right: 400px;
+}
+
+.tree_node {
+    margin-right: 150px;
 }
 
 .xAxis path,
