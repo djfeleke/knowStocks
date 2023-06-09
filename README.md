@@ -78,7 +78,7 @@ User can have access to the basic company financial fundamentals. specifically b
 ## Version 2.0
 
 ***More d3 chart:*** Hourly trading market price chart
-***Password hashing:*** Password hashing will be implement to protect user's passwords'
-***Additional language support:*** Information will be provided with one more additionla language 
 
-## License
+***Password hashing:*** Password hashing will be implement to protect user's passwords'
+
+***Additional language support:*** Information will be provided with one more additionla language 
