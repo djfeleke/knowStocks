@@ -119,6 +119,10 @@ table tr td {
     justify-content: center;
 }
 
+.card-img-top {
+    height: 45vh;
+}
+
 /* Regional companies search */
 #filter {
     width: 250px;

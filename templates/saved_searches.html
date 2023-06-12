@@ -3,7 +3,7 @@
 
 {% block body %}
 <div class="container-fluid">
-    <h3 class="mx-auto my-3 text-center"> Previous searches saved for you.</h3>
+    <h3 class="mx-auto my-3 text-center"> We have saved your previous search for you.</h3>
     <div class="search_result">
         <div class="d-flex mx-auto table-responsive mt-4">
             <table class="table table-responsive table-hover table-striped align-middle table-bordered mx-md-5">
@@ -26,6 +26,7 @@
                                 href="{{url_for('view_company_details',company_id=search.company_id)}}">{{search.company_id}}</a>
                         </td>
                         <td>{{search.search_query}}</td>
+
                         <td>{{search.search_time}}</td>
                     </tr>
 

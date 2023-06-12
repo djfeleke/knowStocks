@@ -7,9 +7,11 @@
     <h5 class="mx-auto mt-3 mb-4 text-center"><strong> The dataset contains over 21,000 records, applying different
             filtering options will be helpful.</strong>
     </h5>
+
     <div class="row d-flex justify-content-md-center align-items-md-stretch">
         <div class="col-12 col-md-3 col-sm-6  px-5 region_level_filter">
-            <div> <label for="filter_region" class="table-filter-label px-5"><strong>Filter by Region:</strong></label>
+            <div> <label for="filter_region" class="table-filter-label px-5"><strong>Filter by
+                        Region:</strong></label>
             </div>
             <select id="filter_region" class="table-filter-option py-1 mt-2 bg-light rounded px-5">
                 <option value="">All Regions</option>
@@ -30,7 +32,8 @@
             </select>
         </div>
         <div class="col-12 col-md-3 col-sm-6  px-5 sector_level_filter">
-            <div><label for="filter_sector" class="table-filter-label px-5"><strong>Filter by Sector:</strong></label>
+            <div><label for="filter_sector" class="table-filter-label px-5"><strong>Filter by
+                        Sector:</strong></label>
             </div>
             <select id="filter_sector" class="table-filter-option py-1 mt-2 bg-light rounded px-5">
                 <option value="">All Sectors</option>
@@ -67,6 +70,7 @@
         <input type="text" class="filter" id="filter" placeholder="Type here to search">
  onkeyup="searchCompany()" -->
 </div>
+
 <div class=" d-flex table-responsive mt-3">
     <table id="all_companies"
         class="table table-responsive table-hover table-striped align-middle table-bordered mx-md-5">
@@ -106,6 +110,5 @@
 
 </div>
 
-</div>
 
 {% endblock %}

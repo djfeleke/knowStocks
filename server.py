@@ -271,11 +271,12 @@ def news_and_sentiments():
 def user_search():
 
     if 'user' in session:
+
         user_id = session['user']
         company_id = request.json.get('company_id')
         filter = request.json.get('input')
 
-        user_search = crud.create_user_search(user_id, company_id, filter)
+        user_search = crud.create_user_search(user_id, company_id, filter, company_name, ticker_symbol, region, sector_name)
         if user_search:
             db.session.add(user_search)
             db.session.commit()
@@ -288,12 +289,12 @@ def saved_searches():
     if 'user' in session:
         user_id = session['user']
         saved_user_searches = crud.get_saved_searches(user_id)
+
     if saved_user_searches:
         return render_template('saved_searches.html', searches = saved_user_searches)
     else:
         return redirect('/')
 
-    
 if __name__ == "__main__":
     connect_to_db(app)
     app.run(host="0.0.0.0", debug=True)
