@@ -256,7 +256,8 @@ def news_and_sentiments():
     sentiment_score_definition = result['sentiment_score_definition']
 
     page = request.args.get('page', type=int, default=1)
-    per_page = 6  # Number of items per page
+    # Number of items per page
+    per_page = 6 
    
     total_items = len(news_sentiments)
     pagination = get_pagination(page, per_page, total_items)
@@ -276,7 +277,7 @@ def user_search():
         company_id = request.json.get('company_id')
         filter = request.json.get('input')
 
-        user_search = crud.create_user_search(user_id, company_id, filter, company_name, ticker_symbol, region, sector_name)
+        user_search = crud.create_user_search(user_id, company_id, filter)
         if user_search:
             db.session.add(user_search)
             db.session.commit()
