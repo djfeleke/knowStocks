@@ -1,0 +1,40 @@
+<title>Saved Searches</title>
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container-fluid">
+    <h3 class="mx-auto my-3 text-center"> We have saved your previous search for you.</h3>
+    <div class="search_result">
+        <div class="d-flex mx-auto table-responsive mt-4">
+            <table class="table table-responsive table-hover table-striped align-middle table-bordered mx-md-5">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-center">N/S</th>
+                        <th scope="col" class="text-center">Company Id</th>
+                        <th scope="col" class="text-center">Search Term</th>
+                        <th scope="col" class="text-center">Search Time</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for search in searches %}
+                    <tr>
+                        <td>{{loop.index}}</td>
+
+                        <td class="text-start"> <a
+                                href="{{url_for('view_company_details',company_id=search.company_id)}}">{{search.company_id}}</a>
+                        </td>
+                        <td>{{search.search_query}}</td>
+
+                        <td>{{search.search_time}}</td>
+                    </tr>
+
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,267 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:400,300,300italic,400italic,700,700italic);
+@import url(https://fonts.googleapis.com/css2?family=Chokokutai&display=swap);
+
+body,
+html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    left: 0;
+    top: 0;
+    font-size: 100%
+}
+
+h1 {
+    font-family: 'Chokokutai', cursive;
+    font-weight: 600;
+}
+
+body {
+    background-color: rgb(252, 252, 252);
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    position: relative;
+}
+
+#footer {
+
+    margin-top: auto;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.nav-item a:hover {
+    background-color: rgb(158, 248, 242);
+    border-radius: 10px;
+}
+
+.nav-item a:active {
+    background-color: rgb(98, 96, 96);
+}
+
+.main-link {
+    color: rgb(0, 127, 139);
+    font-weight: 700;
+
+}
+
+#background-video {
+    object-fit: cover;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    margin-top: 0px;
+    left: 0;
+}
+
+.viewport-header {
+    position: relative;
+    margin-top: 15pc;
+    height: 100vh;
+    text-align: center;
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 100px;
+}
+
+.viewport-header-2 {
+    position: relative;
+    height: 30vh;
+    text-align: center;
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 80px;
+}
+
+.index_body {
+    position: relative;
+    height: 100vh;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+#quote_owner {
+    font-size: 40px;
+}
+
+.login_register a {
+    margin-right: 25px;
+}
+
+table tr td {
+    font-size: medium;
+    text-align: center;
+    font-weight: 700;
+}
+
+.market_capital:before {
+    content: '$';
+}
+
+/* Styling homepage */
+.market_news_card,
+.home_page_card {
+    padding: none;
+}
+
+.home_page_card {
+    align-items: center;
+    justify-content: center;
+}
+
+.card-img-top {
+    height: 45vh;
+}
+
+/* Regional companies search */
+#filter {
+    width: 250px;
+    border-radius: 5px;
+    margin-top: 5px;
+    padding-left: 10px;
+}
+
+/* GICS sector hierarchical treemap */
+
+.node {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.sector_lable {
+    display: inline-block;
+    font-weight: 700;
+    font-size: large;
+    margin-right: 400px;
+}
+
+.tree_node {
+    margin-right: 150px;
+}
+
+.xAxis path,
+.xAxis line {
+    stroke: rgb(108, 107, 108);
+    fill: #696666;
+    shape-rendering: geometricPrecision;
+}
+
+.xAxis text {
+    font-family: Optima, Futura, sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+    fill: rgb(33, 33, 33);
+}
+
+.node circle {
+    fill: #fb1616;
+    stroke: steelblue;
+    stroke-width: 3px;
+}
+
+.node text {
+    font: 13px sans-serif;
+    color: rgba(0, 0, 0, 0.2);
+    font-weight: 500;
+}
+
+.link {
+    fill: none;
+    stroke: #aaabab;
+    stroke-width: 1px;
+}
+
+/* Company details page - Company overview*/
+
+.list_items {
+    font-weight: 600;
+    list-style: disc;
+    justify-content: justify;
+    margin-left: 10px;
+}
+
+@media screen and (max-width: 800px) {
+
+    body {
+        font-size: 12px;
+    }
+
+    .category_level_filter .sector_level_filter .region_level_filter {
+        flex-direction: column;
+    }
+
+    .background-video>#background-video {
+        display: none;
+        margin-top: 0;
+    }
+
+    #carouselIndicators {
+        display: none;
+        margin-top: 0;
+    }
+
+    .viewport-header-2 {
+        font-size: 25px;
+        color: black;
+    }
+}
+
+@media screen and (min-width: 800px) {
+
+
+    .ul_left_padding {
+        padding-left: 32px;
+    }
+
+    .category_level_filter .sector_level_filter .region_level_filter {
+        flex-direction: column;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+
+    .ul_left_padding {
+        padding-left: 32px;
+    }
+
+    .gics_tree_map {
+        margin-left: 250px;
+    }
+
+    .gics_tree_map li {
+        list-style: none;
+        margin-right: 250px;
+        font-weight: 700;
+    }
+
+    .viewport-header-2 {
+        font-size: 70px;
+    }
+
+}
+
+.accordion-button::after {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23333' xmlns='http://www.w3.org/2000/svg'%3e%3cpath fill-rule='evenodd' d='M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z' clip-rule='evenodd'/%3e%3c/svg%3e");
+    transform: scale(.7) !important;
+}
+
+.accordion-button:not(.collapsed)::after {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23333' xmlns='http://www.w3.org/2000/svg'%3e%3cpath fill-rule='evenodd' d='M0 8a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H1a1 1 0 0 1-1-1z' clip-rule='evenodd'/%3e%3c/svg%3e");
+}
+
+.accordion-item {
+    --bs-border-opacity: .10;
+    border-color: rgba(var(--bs-success-rgb), var(--bs-border-opacity)) !important;
+
+}

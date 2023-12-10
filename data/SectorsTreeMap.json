@@ -1,0 +1,403 @@
+{
+    "name": "GICS Sectors",
+    "children": [
+        {
+            "name": "Energy",
+            "children": [
+                {
+                    "name": "Energy",
+                    "children": [
+                        {
+                            "name": "Energy Equipment & Services"
+                        },
+                        {
+                            "name": "Oil, Gas & Consumable Fuels"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Materials",
+            "children": [
+                {
+                    "name": "Materials",
+                    "children": [
+                        {
+                            "name": "Chemicals"
+                        },
+                        {
+                            "name": "Construction Materials"
+                        },
+                        {
+                            "name": "Containers & Packaging"
+                        },
+                        {
+                            "name": "Metals & Mining"
+                        },
+                        {
+                            "name": "Paper & Forest Products"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Industrials",
+            "children": [
+                {
+                    "name": "Capital Goods",
+                    "children": [
+                        {
+                            "name": "Machinery"
+                        },
+                        {
+                            "name": "Trading Companies & Distributors"
+                        }
+                    ]
+                },
+                {
+                    "name": "Commercial & Professional Services",
+                    "children": [
+                        {
+                            "name": "Commercial Services & Supplies"
+                        },
+                        {
+                            "name": "Professional Services"
+                        }
+                    ]
+                },
+                {
+                    "name": "Transportation",
+                    "children": [
+                        {
+                            "name": "Air Freight & Logistics"
+                        },
+                        {
+                            "name": "Passenger Airlines"
+                        },
+                        {
+                            "name": "Marine Transportation"
+                        },
+                        {
+                            "name": "Ground Transportation"
+                        },
+                        {
+                            "name": "Transportation Infrastructure"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Consumer Discretionary",
+            "children": [
+                {
+                    "name": "Automobiles & Components",
+                    "children": [
+                        {
+                            "name": "Automobile Components"
+                        },
+                        {
+                            "name": "Automobiles"
+                        }
+                    ]
+                },
+                {
+                    "name": "Consumer Durables & Apparel",
+                    "children": [
+                        {
+                            "name": "Household Durables"
+                        },
+                        {
+                            "name": "Leisure Products"
+                        },
+                        {
+                            "name": "Textiles, Apparel & Luxury Goods"
+                        }
+                    ]
+                },
+                {
+                    "name": "Consumer Services",
+                    "children": [
+                        {
+                            "name": "Hotels, Restaurants & Leisure"
+                        },
+                        {
+                            "name": "Diversified Consumer Services"
+                        }
+                    ]
+                },
+                {
+                    "name": "Consumer Discretionary Distribution & Retail",
+                    "children": [
+                        {
+                            "name": "Distributors"
+                        },
+                        {
+                            "name": "Broadline Retail"
+                        },
+                        {
+                            "name": "Specialty Retail"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Consumer Staples",
+            "children": [
+                {
+                    "name": "Consumer Staples Distribution & Retail",
+                    "children": [
+                        {
+                            "name": "Consumer Staples Distribution & Retail"
+                        }
+                    ]
+                },
+                {
+                    "name": "Food, Beverage & Tobacco",
+                    "children": [
+                        {
+                            "name": "Beverages"
+                        },
+                        {
+                            "name": "Food Products"
+                        },
+                        {
+                            "name": "Tobacco"
+                        }
+                    ]
+                },
+                {
+                    "name": "Household & Personal Products",
+                    "children": [
+                        {
+                            "name": "Household Products"
+                        },
+                        {
+                            "name": "Personal Care Products"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Health Care",
+            "children": [
+                {
+                    "name": "Health Care Equipment & Services",
+                    "children": [
+                        {
+                            "name": "Health Care Equipment & Supplies"
+                        },
+                        {
+                            "name": "Health Care Providers & Services"
+                        },
+                        {
+                            "name": "Health Care Technology"
+                        }
+                    ]
+                },
+                {
+                    "name": "Pharmaceuticals, Biotechnology & Life Sciences",
+                    "children": [
+                        {
+                            "name": "Biotechnology"
+                        },
+                        {
+                            "name": "Pharmaceuticals"
+                        },
+                        {
+                            "name": "Life Sciences Tools & Services"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Financials",
+            "children": [
+                {
+                    "name": "Banks",
+                    "children": [
+                        {
+                            "name": "Banks"
+                        }
+                    ]
+                },
+                {
+                    "name": "Financial Services",
+                    "children": [
+                        {
+                            "name": "Financial Services"
+                        },
+                        {
+                            "name": "Consumer Finance"
+                        },
+                        {
+                            "name": "Capital Markets"
+                        },
+                        {
+                            "name": "Mortgage Real Estate Investment Trusts (REITs)"
+                        }
+                    ]
+                },
+                {
+                    "name": "Insurance",
+                    "children": [
+                        {
+                            "name": "Insurance"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Information Technology",
+            "children": [
+                {
+                    "name": "Software & Services",
+                    "children": [
+                        {
+                            "name": "Internet Software & Services"
+                        },
+                        {
+                            "name": "IT Services"
+                        },
+                        {
+                            "name": "Software"
+                        }
+                    ]
+                },
+                {
+                    "name": "Technology Hardware & Equipment",
+                    "children": [
+                        {
+                            "name": "Communications Equipment"
+                        },
+                        {
+                            "name": "Technology Hardware, Storage & Peripherals"
+                        },
+                        {
+                            "name": "Electronic Equipment, Instruments & Components"
+                        }
+                    ]
+                },
+                {
+                    "name": "Semiconductors & Semiconductor Equipment",
+                    "children": [
+                        {
+                            "name": "Semiconductors & Semiconductor Equipment",
+                            "children": [
+                                {
+                                    "name": "Semiconductor Materials & Equipment"
+                                },
+                                {
+                                    "name": "Semiconductors"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Communication Services",
+            "children": [
+                {
+                    "name": "Telecommunication Services",
+                    "children": [
+                        {
+                            "name": "Diversified Telecommunication Services"
+                        },
+                        {
+                            "name": "Wireless Telecommunication Services"
+                        }
+                    ]
+                },
+                {
+                    "name": "Media & Entertainment",
+                    "children": [
+                        {
+                            "name": "Media"
+                        },
+                        {
+                            "name": "Entertainment"
+                        },
+                        {
+                            "name": "Interactive Media & Services"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Utilities",
+            "children": [
+                {
+                    "name": "Utilities",
+                    "children": [
+                        {
+                            "name": "Electric Utilities"
+                        },
+                        {
+                            "name": "Gas Utilities"
+                        },
+                        {
+                            "name": "Multi-Utilities"
+                        },
+                        {
+                            "name": "Water Utilities"
+                        },
+                        {
+                            "name": "Independent Power and Renewable Electricity Producers"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Real Estate",
+            "children": [
+                {
+                    "name": "Equity Real Estate Investment Trusts (REITs)",
+                    "children": [
+                        {
+                            "name": "Diversified REITs"
+                        },
+                        {
+                            "name": "Industrial REITs"
+                        },
+                        {
+                            "name": "Hotel & Resort REITs"
+                        },
+                        {
+                            "name": "Office REITs"
+                        },
+                        {
+                            "name": "Health Care REITs"
+                        },
+                        {
+                            "name": "Residential REITs"
+                        },
+                        {
+                            "name": "Retail REITs"
+                        },
+                        {
+                            "name": "Specialized REITs"
+                        }
+                    ]
+                },
+                {
+                    "name": "Real Estate Management & Development",
+                    "children": [
+                        {
+                            "name": "Real Estate Management & Development"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

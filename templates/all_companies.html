@@ -1,0 +1,114 @@
+<title>Companies</title>
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container-fluid ">
+
+    <h5 class="mx-auto mt-3 mb-4 text-center"><strong> The dataset contains over 21,000 records, applying different
+            filtering options will be helpful.</strong>
+    </h5>
+
+    <div class="row d-flex justify-content-md-center align-items-md-stretch">
+        <div class="col-12 col-md-3 col-sm-6  px-5 region_level_filter">
+            <div> <label for="filter_region" class="table-filter-label px-5"><strong>Filter by
+                        Region:</strong></label>
+            </div>
+            <select id="filter_region" class="table-filter-option py-1 mt-2 bg-light rounded px-5">
+                <option value="">All Regions</option>
+                <option value="Brazil">Brazil </option>>
+                <option value="Canada">Canada </option>
+                <option value="Mainland China">Mainland China </option>
+                <option value="France"> France </option>
+                <option value="Germany"> Germany </option>
+                <option value="Hong Kong"> Hong Kong </option>
+                <option value="India"> India </option>
+                <option value="Japan"> Japan </option>
+                <option value="Mexico"> Mexico </option>
+                <option value="Portugal"> Portugal </option>
+                <option value="South Africa"> South Africa </option>
+                <option value="Spain"> Spain </option>
+                <option value="United Kingdom">United Kingdom </option>
+                <option value="United States"> United States </option>
+            </select>
+        </div>
+        <div class="col-12 col-md-3 col-sm-6  px-5 sector_level_filter">
+            <div><label for="filter_sector" class="table-filter-label px-5"><strong>Filter by
+                        Sector:</strong></label>
+            </div>
+            <select id="filter_sector" class="table-filter-option py-1 mt-2 bg-light rounded px-5">
+                <option value="">All Sectors</option>
+                <option value="Communication Services">Communication Services </option>>
+                <option value="Consumer Discretionary">Consumer Discretionary </option>
+                <option value="Consumer Staples">Consumer Staples </option>
+                <option value="Energy"> Energy </option>
+                <option value="Financials"> Financials </option>
+                <option value="Healthcare"> Healthcare</option>
+                <option value="Industrials"> Industrials </option>
+                <option value="Information Technology"> Information Technology </option>
+                <option value="Materials"> Materials </option>
+                <option value="Real Estate"> Real Estate </option>
+                <option value="Utilities"> Utilities </option>
+                <option value="Other"> Other </option>
+            </select>
+        </div>
+        <div class="col-12 col-md-3 col-sm-6 px-5 category_level_filter">
+            <div><label for="filter_category" class="table-filter-label px-5"><strong> Filter by Capital
+                        Category:</strong></label></div>
+            <select id="filter_category" class="table-filter-option py-1 mt-2 bg-light rounded px-5">
+                <option value="">All Capital Categories</option>
+                <option value="Mid-cap">Mid-cap </option>>
+                <option value="Small-cap">Small-cap </option>
+                <option value="Micro-cap">Micro-cap </option>
+                <option value="Large-cap"> Large-cap </option>
+
+            </select>
+        </div>
+
+    </div>
+    <!-- <div class="d-flex filter_company justify-content-center align-items-center">
+        <label for="filter" class="me-2 align-middle"><strong> Search: </strong></label>
+        <input type="text" class="filter" id="filter" placeholder="Type here to search">
+ onkeyup="searchCompany()" -->
+</div>
+
+<div class=" d-flex table-responsive mt-3">
+    <table id="all_companies"
+        class="table table-responsive table-hover table-striped align-middle table-bordered mx-md-5">
+        <thead>
+            <tr>
+
+                <!-- <th scope="col" class="text-center">S/N</th> -->
+                <th scope="col" class="text-center">Company Name</th>
+                <th scope="col" class="text-center">Ticker Symbol</th>
+                <th scope="col" class="text-center">Market Capital</th>
+                <th scope="col" class="text-center">Region</th>
+                <th scope="col" class="text-center">GICS Sector</th>
+                <th scope="col" class="text-center">Capital Category</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for company in companies %}
+
+            <tr>
+                <!-- <td>{{loop.index }}</td> -->
+                <td class="text-start" width="25%" data-company="{{company.company_name}}"> <a
+                        href="{{url_for('view_company_details', company_id = company['company_id'])}}">{{company.company_name}}</a>
+                </td>
+
+                <td>{{company.ticker_symbol}}</td>
+                <td>{{company.market_capital|currencyFormat}}</td>
+                <td data-region="{{company.region}}">{{company.region}}</td>
+                <td data-sector_name="{{company.sector_name}}">{{company.sector_name}}</td>
+                <td data-category="{{company.category}}">{{company.category}}</td>
+            </tr>
+
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,55 @@
+<title>register</title>
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="container mt-5">
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col col-xl-10">
+            <div class="login_register_card card" style="border-radius: 1rem;">
+                <div class="row g-0">
+                    <div class="col-md-6 col-lg-5 d-none d-md-block">
+                        <img src="../static/image/forLoginPage.png" alt="login form" class="img-fluid"
+                            style="border-radius: 1rem 0 0 1rem;" />
+                    </div>
+                    <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                        <div class="card-body p-4 p-lg-5 text-black">
+
+                            <form action="/register_process" method="POST">
+                                <div class="form-outline mb-2">
+                                    <input type="text" id="fullname" name="fullname"
+                                        class="form-control form-control-lg" placeholder="Full Name" required />
+                                    <label class="form-label" for="fullname">Full Name</label>
+                                </div>
+                                <div class="form-outline mb-2">
+                                    <input type="email" id="email" name="email" class="form-control form-control-lg"
+                                        placeholder="email" required />
+                                    <label class="form-label" for="email">Email address</label>
+                                </div>
+
+                                <div class="form-outline mb-2">
+                                    <input type="password" id="password" name="password"
+                                        class="form-control form-control-lg" placeholder="password" required />
+                                    <label class="form-label" for="password">Password</label>
+                                </div>
+
+                                <div class="pt-1 mb-2">
+                                    <input type="submit" class="btn btn-success">
+                                    <!-- <button class="btn btn-info btn-lg btn-block" type="button">Register</button> -->
+                                </div>
+
+                                <a class="small text-muted" href="#!">Forgot password?</a>
+                                <p class="mb-3 pb-lg-2" style="color: #393f81;">Have an account? <a
+                                        href="{{url_for('user_login')}}" style="color: #393f81;">Login</a></p>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

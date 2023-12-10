@@ -1,0 +1,109 @@
+<title>Welecome</title>
+{% extends 'base.html' %}
+
+{% block body %}
+
+
+</div>
+<div class="container-fluid background-video">
+
+    <video id="background-video" autoplay loop muted poster="../static/image/background_v.png">
+        <source src="../static/image/background_v.webm" type="video/webm">
+    </video>
+
+    <div id="carouselIndicators" class="carousel slide" data-bs-ride="carousel">
+
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="3000">
+                <h2 class=" viewport-header ">“The four most dangerous words in investing are ‘this time it’s
+                    different.'”
+                    <br>
+                    <span id="quote_owner"> – Sir John Templeton </span>
+                </h2>
+            </div>
+            <div class="carousel-item" data-bs-interval="3000">
+                <h2 class=" viewport-header ">“Given a 10% chance of a 100 times payoff, you should take that bet every
+                    time.”
+                    <br>
+                    <span id="quote_owner"> – Jeff Bezos. </span>
+                </h2>
+            </div>
+            <div class="carousel-item" data-bs-interval="3000">
+                <h2 class=" viewport-header ">"I don't look to jump over seven-foot bars; I look around for one-foot
+                    bars that I can step over."
+                    <br>
+                    <span id="quote_owner"> – Warren Buffett </span>
+                </h2>
+            </div>
+            <div class="carousel-item" data-bs-interval="3000">
+                <h2 class=" viewport-header ">"How many millionaires do you know who have become wealthy by investing in
+                    savings accounts? I rest my case."<br>
+                    <span id="quote_owner"> – Robert G. Allen" </span>
+                </h2>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselIndicators"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselIndicators"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+
+        </div>
+    </div>
+
+</div>
+
+<h3 class="viewport-header-2 my-sm-4 my-md-4 mx-md-5">Major US Stock Market Bulls and Bears In History</h3>
+
+
+<div class="home_page_card card col-12 col-md-6 col-lg-4  px-0 py-0 my-sm-2 my-md-4 py-md-4 mx-auto">
+    <img src="../static/image/bull markets.png" class="card-img-top" alt="...">
+    <div class="card-body d-flex flex-column">
+        <h5 class="card-title">US Bull Market</h5>
+        <p class="card-text">Knowing the market history and having a closer look to its trend gives a very good
+            perspective to the present. The major bull runs, according to www.visualcapitalist.com, are the
+            Post-War Boom, which occurred after the
+            end of WWII, the ’70s Growth, The Reagan Era,the Great Expansion which lasted 9.5 years, and the
+            Hot Aughts.
+        </p>
+
+        <a href="https://www.visualcapitalist.com/visualizing-longest-bull-markets-modern-era/" target="_blank"
+            class="btn btn-primary mt-auto">Go to source</a>
+    </div>
+</div>
+<div class="home_page_card card col-12 col-md-6 col-lg-4  px-0 py-0 my-5 py-5 mx-auto">
+    <img src="../static/image/How long the bear with us.png" class="card-img-top" alt="...">
+    <div class="card-body d-flex flex-column">
+        <h5 class="card-title">How long the bear stays</h5>
+        <p class="card-text">The duration of a bear market can vary widely and is influenced by various factors,
+            including the underlying economic conditions, market sentiment, and the specific catalysts driving
+            the market decline.
+            <a href="https://www.businessinsider.com/illustration-of-bull-and-bear-markets-2014-12"
+                target="_blank">Click here</a>
+            to read more on the details of the chart above.
+        </p>
+        <a href="https://www.hartfordfunds.com/practice-management/client-conversations/managing-volatility/bear-markets.html#:~:text=Bear%20markets%20tend%20to%20be,average%20frequency%20between%20bear%20markets"
+            class="btn btn-primary mt-auto" target="_blank">Go to source</a>
+
+    </div>
+
+    <!-- <div class="home_page_card card col-12 col-md-6 col-lg-4 my-5 py-5 px-0 py-0 mx-auto">
+        <img src="../static/image/recent bear markets in us.png" class="card-img-top" alt="...">
+        <div class="card-body d-flex flex-column">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                card's
+                content.</p>
+            <a href="https://www.coinbase.com/blog/the-crypto-market-downturn-explained-a-macro-outlook"
+                class="btn btn-primary mt-auto ">Go to source</a>
+        </div>
+    </div> -->
+
+</div>
+
+
+{% endblock %}
